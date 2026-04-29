@@ -1,26 +1,241 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─────────────────────────────────────────
+   SCRUNCH DESIGN SYSTEM — Tailwind tokens
+   All tokens are available as Tailwind utilities:
+   bg-scrunch-blue, text-ink, font-newsreader,
+   rounded-scrunch-md, shadow-scrunch-md, etc.
+───────────────────────────────────────── */
+@theme {
+  /* ── Brand Colors ── */
+  --color-scrunch-blue:   #2A4AEA;
+  --color-ai-green:       #D8FC3B;
+  --color-cloud-blue:     #93C0FE;
+  --color-botanic-green:  #6E8920;
+
+  /* ── Neutrals ── */
+  --color-paper:      #FBF9F6;
+  --color-porcelain:  #F7F3EB;
+  --color-glaze:      #F1E8C7;
+  --color-clay:       #40362E;
+  --color-coal:       #242220;
+  --color-ink:        #1D1107;
+  --color-stone:      #15130F;
+  --color-mud:        #87807D;
+
+  /* ── Extended ── */
+  --color-lime-bright: #CAFC00;
+  --color-blue-deep:   #004AF0;
+  --color-blue-mid-s:  #4E86F5;
+
+  /* ── Blue Scale ── */
+  --color-s-blue-50:  #EFF4FF;
+  --color-s-blue-100: #DBE5FE;
+  --color-s-blue-200: #BFD2FE;
+  --color-s-blue-300: #93C0FE;
+  --color-s-blue-400: #618FF9;
+  --color-s-blue-500: #3C67F5;
+  --color-s-blue-600: #2A4AEA;
+  --color-s-blue-700: #1E33D7;
+  --color-s-blue-800: #1F2CAE;
+  --color-s-blue-900: #1F2B89;
+  --color-s-blue-950: #171C54;
+
+  /* ── Green Scale ── */
+  --color-s-green-50:  #FBFFE7;
+  --color-s-green-100: #F2FFC5;
+  --color-s-green-200: #E9FE91;
+  --color-s-green-300: #D8FC3B;
+  --color-s-green-400: #CCF60E;
+  --color-s-green-500: #BEE208;
+  --color-s-green-600: #A3BC03;
+  --color-s-green-700: #6E8920;
+  --color-s-green-800: #656B0A;
+  --color-s-green-900: #484B0C;
+  --color-s-green-950: #2D3003;
+
+  /* ── Neutral Scale ── */
+  --color-s-neutral-50:  #FBF9F6;
+  --color-s-neutral-100: #F7F3EB;
+  --color-s-neutral-200: #F6EFDC;
+  --color-s-neutral-300: #F1E8C7;
+  --color-s-neutral-400: #B8AB8E;
+  --color-s-neutral-500: #93886F;
+  --color-s-neutral-600: #67624C;
+  --color-s-neutral-700: #514B39;
+  --color-s-neutral-800: #40362E;
+  --color-s-neutral-900: #242220;
+  --color-s-neutral-950: #0F0C06;
+
+  /* ── Warning Scale ── */
+  --color-s-warning-50:  #FEFDE8;
+  --color-s-warning-100: #FFFCC2;
+  --color-s-warning-200: #FFF587;
+  --color-s-warning-300: #FFE843;
+  --color-s-warning-400: #FFDA1F;
+  --color-s-warning-500: #EFBE03;
+  --color-s-warning-600: #CE9300;
+  --color-s-warning-700: #A46804;
+  --color-s-warning-800: #88520B;
+  --color-s-warning-900: #734210;
+  --color-s-warning-950: #432205;
+
+  /* ── Danger Scale ── */
+  --color-s-danger-50:  #FFF3ED;
+  --color-s-danger-100: #FFE4D4;
+  --color-s-danger-200: #FFC5A8;
+  --color-s-danger-300: #FF9D70;
+  --color-s-danger-400: #FF6937;
+  --color-s-danger-500: #FF5021;
+  --color-s-danger-600: #F02806;
+  --color-s-danger-700: #C71907;
+  --color-s-danger-800: #9E150E;
+  --color-s-danger-900: #7F150F;
+  --color-s-danger-950: #450605;
+
+  /* ── Fonts ── */
+  --font-newsreader: var(--font-newsreader-var), "Georgia", serif;
+  --font-plex-mono:  var(--font-plex-mono-var), ui-monospace, "Menlo", monospace;
+
+  /* ── Border Radius ── */
+  --radius-scrunch-xs:   4px;
+  --radius-scrunch-sm:   8px;
+  --radius-scrunch-md:   12px;
+  --radius-scrunch-lg:   20px;
+  --radius-scrunch-xl:   24px;
+  --radius-scrunch-pill: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-scrunch-sm: 0 1px 2px rgba(29,17,7,0.06);
+  --shadow-scrunch-md: 0 4px 14px rgba(29,17,7,0.08), 0 1px 2px rgba(29,17,7,0.04);
+  --shadow-scrunch-lg: 0 24px 48px -12px rgba(29,17,7,0.18), 0 2px 4px rgba(29,17,7,0.06);
 }
