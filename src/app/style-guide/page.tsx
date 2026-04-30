@@ -375,14 +375,14 @@ export default function StyleGuidePage() {
                 stops={[
                   { bg: "#FBFFE7", stop: "50",  hex: "#FBFFE7" },
                   { bg: "#F2FFC5", stop: "100", hex: "#F2FFC5" },
-                  { bg: "#E9FE91", stop: "200", hex: "#E9FE91" },
-                  { bg: "#D8FC3B", stop: "300", hex: "#D8FC3B", pinned: true, pinLabel: "AI Green" },
-                  { bg: "#CCF60E", stop: "400", hex: "#CCF60E" },
-                  { bg: "#BEE208", stop: "500", hex: "#BEE208" },
-                  { bg: "#A3BC03", stop: "600", hex: "#A3BC03" },
+                  { bg: "#D8FC3B", stop: "200", hex: "#D8FC3B", pinned: true, pinLabel: "AI Green" },
+                  { bg: "#C3E536", stop: "300", hex: "#C3E536" },
+                  { bg: "#AECE31", stop: "400", hex: "#AECE31" },
+                  { bg: "#99B72C", stop: "500", hex: "#99B72C" },
+                  { bg: "#84A027", stop: "600", hex: "#84A027", dark: true },
                   { bg: "#6E8920", stop: "700", hex: "#6E8920", dark: true, pinned: true, pinLabel: "Botanic" },
-                  { bg: "#656B0A", stop: "800", hex: "#656B0A", dark: true },
-                  { bg: "#484B0C", stop: "900", hex: "#484B0C", dark: true },
+                  { bg: "#586B16", stop: "800", hex: "#586B16", dark: true },
+                  { bg: "#434E0D", stop: "900", hex: "#434E0D", dark: true },
                   { bg: "#2D3003", stop: "950", hex: "#2D3003", dark: true },
                 ]}
               />

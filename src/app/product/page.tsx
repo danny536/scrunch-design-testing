@@ -127,6 +127,44 @@ const P = {
   ds9: "#F4E8C3", // Cream
 }
 
+// ─── Data palette rules ───────────────────────────────────────────────────────
+// 1–6 series: hand-picked for contrast (alternating across families)
+// 7+ series: full family cascade, dark→light (Blues → Greens → Neutrals → Ambers)
+
+const DATA_PALETTE_SMALL = [
+  { hex: "#3C67F5", label: "Blue 500"    },  //  1
+  { hex: "#CCF60E", label: "Green 400"   },  //  2
+  { hex: "#F1E8C7", label: "Neutral 300" },  //  3
+  { hex: "#93C0FE", label: "Blue 300"    },  //  4
+  { hex: "#A3BC03", label: "Green 600"   },  //  5
+  { hex: "#93886F", label: "Neutral 500" },  //  6
+]
+
+const DATA_PALETTE = [
+  // ── Blues ──────────────────────────────────────────────────────────────────
+  { hex: "#1F2CAE", label: "Blue 800"    },  //  1
+  { hex: "#3C67F5", label: "Blue 500"    },  //  2
+  { hex: "#93C0FE", label: "Blue 300"    },  //  3
+  // ── Greens ─────────────────────────────────────────────────────────────────
+  { hex: "#656B0A", label: "Green 800"   },  //  4
+  { hex: "#A3BC03", label: "Green 600"   },  //  5
+  { hex: "#CCF60E", label: "Green 400"   },  //  6
+  // ── Neutrals ───────────────────────────────────────────────────────────────
+  { hex: "#40362E", label: "Neutral 800" },  //  7
+  { hex: "#93886F", label: "Neutral 500" },  //  8
+  { hex: "#F1E8C7", label: "Neutral 300" },  //  9
+  // ── Ambers ─────────────────────────────────────────────────────────────────
+  { hex: "#88520B", label: "Amber 800"   },  // 10
+  { hex: "#EFBE03", label: "Amber 500"   },  // 11
+  { hex: "#FFE843", label: "Amber 300"   },  // 12
+]
+
+export function getChartColors(n: number): string[] {
+  const clamped = Math.min(n, 12)
+  if (clamped <= 6) return DATA_PALETTE_SMALL.slice(0, clamped).map(c => c.hex)
+  return DATA_PALETTE.slice(0, clamped).map(c => c.hex)
+}
+
 // ─── Chart data ───────────────────────────────────────────────────────────────
 
 const competitiveData = [
@@ -168,19 +206,19 @@ const sentimentData = [
 ]
 
 const citationsData = [
-  { name: "Third Party", value: 38, color: P.blue600 },
-  { name: "Competitors", value: 24, color: P.green400 },
-  { name: "Your Brand",  value: 18, color: P.ds6 },
-  { name: "Social",      value: 13, color: P.ds3 },
-  { name: "Retailer",    value: 7,  color: P.neutral400 },
+  { name: "Third Party", value: 38, color: getChartColors(5)[0] },
+  { name: "Competitors", value: 24, color: getChartColors(5)[1] },
+  { name: "Your Brand",  value: 18, color: getChartColors(5)[2] },
+  { name: "Social",      value: 13, color: getChartColors(5)[3] },
+  { name: "Retailer",    value: 7,  color: getChartColors(5)[4] },
 ]
 
 const topBrands = [
-  { rank: 1, name: "Oral-B",    pct: 56, color: P.blue600, highlight: false },
-  { rank: 2, name: "Colgate",   pct: 54, color: P.ds6, highlight: true  },
-  { rank: 3, name: "Crest",     pct: 46, color: P.ds3, highlight: false },
-  { rank: 4, name: "Sensodyne", pct: 43, color: P.neutral700, highlight: false },
-  { rank: 5, name: "Aquafresh", pct: 1,  color: P.neutral600, highlight: false },
+  { rank: 1, name: "Oral-B",    pct: 56, color: getChartColors(5)[0], highlight: false },
+  { rank: 2, name: "Colgate",   pct: 54, color: getChartColors(5)[1], highlight: true  },
+  { rank: 3, name: "Crest",     pct: 46, color: getChartColors(5)[2], highlight: false },
+  { rank: 4, name: "Sensodyne", pct: 43, color: getChartColors(5)[3], highlight: false },
+  { rank: 5, name: "Aquafresh", pct: 1,  color: getChartColors(5)[4], highlight: false },
 ]
 
 // ─── Platform icons ───────────────────────────────────────────────────────────
@@ -269,7 +307,7 @@ function DonutCard({
   const isPositive = trendValue.startsWith("+")
 
   return (
-    <div className="rounded-scrunch-lg bg-white p-5">
+    <div className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
       <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-3">
         <span>{title}</span>
         <Info className="h-3.5 w-3.5 text-ink/30" />
@@ -348,7 +386,7 @@ export default function ProductDashboard() {
     <div className="space-y-6 pb-10">
 
       {/* ── Welcome banner ────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-scrunch-xl bg-white px-8 py-7">
+      <div className="relative overflow-hidden rounded-scrunch-xl bg-white px-8 py-7 shadow-scrunch-sm">
         <div className="max-w-[600px]">
           <h2 className="text-[18px] font-semibold text-ink leading-snug">
             Welcome to Your AI Visibility Dashboard
@@ -371,19 +409,19 @@ export default function ProductDashboard() {
         {/* Video thumbnail */}
         <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:block">
           <div className="relative h-[140px] w-[240px] overflow-hidden rounded-scrunch-md"
-            style={{ background: `linear-gradient(135deg, ${P.blue900}, ${P.blue800}, ${P.blue950})` }}>
+            style={{ backgroundImage: "url('/backgrounds/bg3.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
             <div className="absolute inset-0 flex flex-col gap-1.5 p-3 opacity-60">
-              <div className="h-2 w-3/4 rounded bg-white/20" />
-              <div className="h-2 w-1/2 rounded bg-white/15" />
-              <div className="mt-1 h-8 w-full rounded bg-white/10" />
+              <div className="h-2 w-3/4 rounded bg-white/30" />
+              <div className="h-2 w-1/2 rounded bg-white/20" />
+              <div className="mt-1 h-8 w-full rounded bg-white/15" />
               <div className="flex gap-1">
-                <div className="h-12 flex-1 rounded" style={{ backgroundColor: `${P.blue300}4D` }} />
-                <div className="h-12 flex-1 rounded" style={{ backgroundColor: `${P.green200}33` }} />
+                <div className="h-12 flex-1 rounded bg-white/15" />
+                <div className="h-12 flex-1 rounded bg-white/10" />
               </div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg">
-                <Play className="h-4 w-4 translate-x-0.5" style={{ fill: P.blue800, color: P.blue800 }} />
+                <Play className="h-4 w-4 translate-x-0.5 text-ink" style={{ fill: "currentColor" }} />
               </div>
             </div>
           </div>
@@ -394,7 +432,7 @@ export default function ProductDashboard() {
       <div>
         <h2 className="mb-3 text-[15px] font-semibold text-ink">Insights &amp; Action Items</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-scrunch-lg bg-white px-6 py-5">
+          <div className="rounded-scrunch-lg bg-white px-6 py-5 shadow-scrunch-sm">
             <div className="flex items-center gap-2 mb-3">
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50">
                 <Users className="h-4 w-4 text-s-blue-600" strokeWidth={1.6} />
@@ -411,7 +449,7 @@ export default function ProductDashboard() {
             </button>
           </div>
 
-          <div className="rounded-scrunch-lg bg-white px-6 py-5">
+          <div className="rounded-scrunch-lg bg-white px-6 py-5 shadow-scrunch-sm">
             <div className="flex items-center gap-2 mb-3">
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50">
                 <LayoutGrid className="h-4 w-4 text-s-blue-600" strokeWidth={1.6} />
@@ -457,19 +495,19 @@ export default function ProductDashboard() {
 
         {/* Stats row — three separate cards */}
         <div className="mb-4 grid grid-cols-3 gap-4">
-          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 flex flex-col">
+          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
               Prompts <Info className="h-3 w-3" />
             </div>
             <div className="mt-auto pt-2 text-[42px] font-normal text-ink tabular-nums leading-none tracking-tighter">207</div>
           </div>
-          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 flex flex-col">
+          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
               Responses <Info className="h-3 w-3" />
             </div>
             <div className="mt-auto pt-2 text-[42px] font-normal text-ink tabular-nums leading-none tracking-tighter">5778</div>
           </div>
-          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-6 flex flex-col">
+          <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-6 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
               Platforms <Info className="h-3 w-3" />
             </div>
@@ -482,7 +520,7 @@ export default function ProductDashboard() {
         {/* Competitive presence chart + top brands */}
         <div className="grid grid-cols-5 gap-4">
           {/* Line chart */}
-          <div className="col-span-3 rounded-scrunch-lg bg-white px-6 pt-5 pb-5 flex flex-col">
+          <div className="col-span-3 rounded-scrunch-lg bg-white px-6 pt-5 pb-5 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-4 shrink-0">
               Competitive Presence
               <span className="text-ink/35 font-normal">(% of total)</span>
@@ -508,21 +546,22 @@ export default function ProductDashboard() {
                   axisLine={false}
                 />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.08)", background: "rgba(255,255,255,0.82)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", boxShadow: "0 4px 16px rgba(29,17,7,0.08)" }}
-                  formatter={(v) => [v !== undefined ? `${v}%` : ""]}
+                  contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
+                  formatter={(v, name) => [v !== undefined ? `${v}%` : "", name as string]}
+                  itemSorter={(item) => -(item.value as number)}
                 />
-                <Line type="monotone" dataKey="oralB"     stroke={P.blue600} strokeWidth={2}   dot={false} name="Oral-B" />
-                <Line type="monotone" dataKey="colgate"   stroke={P.ds6} strokeWidth={2}   dot={false} name="Colgate" />
-                <Line type="monotone" dataKey="crest"     stroke={P.ds3} strokeWidth={1.5} dot={false} name="Crest" />
-                <Line type="monotone" dataKey="sensodyne" stroke={P.neutral700} strokeWidth={1.5} dot={false} name="Sensodyne" />
-                <Line type="monotone" dataKey="aquafresh" stroke={P.neutral600} strokeWidth={1}   dot={false} name="Aquafresh" />
+                <Line type="monotone" dataKey="oralB"     stroke={getChartColors(5)[0]} strokeWidth={2}   dot={false} name="Oral-B" />
+                <Line type="monotone" dataKey="colgate"   stroke={getChartColors(5)[1]} strokeWidth={2}   dot={false} name="Colgate" />
+                <Line type="monotone" dataKey="crest"     stroke={getChartColors(5)[2]} strokeWidth={1.5} dot={false} name="Crest" />
+                <Line type="monotone" dataKey="sensodyne" stroke={getChartColors(5)[3]} strokeWidth={1.5} dot={false} name="Sensodyne" />
+                <Line type="monotone" dataKey="aquafresh" stroke={getChartColors(5)[4]} strokeWidth={1}   dot={false} name="Aquafresh" />
               </LineChart>
             </ResponsiveContainer>
             </div>{/* end flex-1 */}
           </div>
 
           {/* Top brands */}
-          <div className="col-span-2 rounded-scrunch-lg bg-white px-6 py-5">
+          <div className="col-span-2 rounded-scrunch-lg bg-white px-6 py-5 shadow-scrunch-sm">
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-4">
               Top brands
               <span className="text-ink/35 font-normal">(avg %)</span>
@@ -630,6 +669,10 @@ export default function ProductDashboard() {
 
       {/* ── Competitor Mention Rate ───────────────── */}
       <MentionRateSection />
+
+      {/* ── Data Palette Rules ───────────────────── */}
+      <PaletteDemoSection />
+
     </div>
   )
 }
@@ -716,7 +759,10 @@ function MentionRateSection() {
   const renderChart = () => {
     if (chartType === "donut") {
       return (
-        <div className="shrink-0">
+        <div className="shrink-0 relative" style={{
+          backgroundImage: `radial-gradient(circle, rgba(29,17,7,0.18) 1px, transparent 1px)`,
+          backgroundSize: "28px 28px",
+        }}>
           <PieChart width={520} height={520}>
             <Pie data={mentionRateData} cx={260} cy={260} innerRadius={134} outerRadius={250}
               dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={2} stroke="#F8F6F2"
@@ -724,6 +770,13 @@ function MentionRateSection() {
               {mentionRateData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
             </Pie>
           </PieChart>
+          {/* Grain overlay */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23f)'/></svg>")`,
+            backgroundRepeat: "repeat",
+            opacity: 0.13,
+            mixBlendMode: "multiply",
+          }} />
         </div>
       )
     }
@@ -741,7 +794,7 @@ function MentionRateSection() {
               tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
             <YAxis type="category" dataKey="name" width={110}
               tick={{ fontSize: 12, fill: "#1D1107" }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: "none" }}
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
               formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
             <Bar dataKey="pct" radius={[0, 4, 4, 0]}>
               {mentionRateData.slice(0, 10).map((entry, i) => (
@@ -763,7 +816,7 @@ function MentionRateSection() {
               <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
               <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
                 tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: "none" }}
+              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
                 formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
               {trendLines.map((l) => (
                 <Line key={l.key} type="monotone" dataKey={l.key}
@@ -785,7 +838,7 @@ function MentionRateSection() {
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
             <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
               tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: "none" }}
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
               formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
             {trendLines.map((l) => (
               <Area key={l.key} type="monotone" dataKey={l.key}
@@ -878,7 +931,7 @@ function MentionRateSection() {
       </div>
 
       {/* White card */}
-      <div className="rounded-scrunch-xl bg-white px-7 py-6">
+      <div className="rounded-scrunch-xl bg-white px-7 py-6 shadow-scrunch-sm">
         {/* Header */}
         <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-5">
           Mention Rate For Scrunch Broken Down By Competitor
@@ -947,5 +1000,111 @@ function MentionRateSection() {
         )}
       </div>
     </>
+  )
+}
+
+// Fixed demo values (4 months × 12 series)
+const PALETTE_DEMO_DATA = [
+  { m: "Jan", v: [72, 55, 38, 61, 44, 83, 37, 58, 69, 47, 63, 51] },
+  { m: "Feb", v: [81, 43, 67, 55, 68, 52, 61, 44, 74, 39, 57, 66] },
+  { m: "Mar", v: [58, 71, 45, 34, 39, 64, 73, 51, 42, 68, 55, 38] },
+  { m: "Apr", v: [65, 62, 53, 72, 57, 41, 48, 67, 53, 76, 44, 59] },
+]
+
+function makePaletteBarData(n: number): Record<string, string | number>[] {
+  return PALETTE_DEMO_DATA.map(row => {
+    const obj: Record<string, string | number> = { m: row.m }
+    for (let i = 0; i < n; i++) obj[`s${i}`] = row.v[i]
+    return obj
+  })
+}
+
+function PaletteDemoSection() {
+  const variants: { n: number; label: string }[] = [
+    { n: 1,  label: "1 series"  },
+    { n: 2,  label: "2 series"  },
+    { n: 3,  label: "3 series"  },
+    { n: 4,  label: "4 series"  },
+    { n: 5,  label: "5 series"  },
+    { n: 6,  label: "6 series"  },
+    { n: 8,  label: "7+ series" },
+    { n: 12, label: "12 series" },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="mb-1.5 text-[15px] font-semibold text-ink">Data Palette Rules</h2>
+        <p className="text-[13px] text-ink/50 leading-relaxed">
+          1–6 series: hand-picked for contrast — Blue 500 → Green 400 → Neutral 300 → Blue 300 → Green 600 → Neutral 500. At 7+ series: full family cascade, dark to light — all Blues, then Greens, then Neutrals, then Ambers.
+        </p>
+      </div>
+
+      {/* Bar charts */}
+      <div>
+        <p className="mb-3 text-[12px] font-medium text-ink/40 uppercase tracking-[0.06em]">Bar</p>
+        <div className="grid grid-cols-4 gap-4">
+          {variants.map(({ n, label }) => {
+            const colors = getChartColors(n)
+            const data = makePaletteBarData(n)
+            const keys = Array.from({ length: n }, (_, i) => `s${i}`)
+            return (
+              <div key={n} className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[13px] font-medium text-ink/70">{label}</span>
+                  <div className="flex items-center gap-1 flex-wrap justify-end" style={{ maxWidth: 100 }}>
+                    {colors.map((c, i) => (
+                      <span key={i} className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: c }} />
+                    ))}
+                  </div>
+                </div>
+                <ResponsiveContainer width="100%" height={100}>
+                  <BarChart data={data} margin={{ top: 2, right: 0, bottom: 0, left: -30 }} barGap={1} barCategoryGap="30%">
+                    <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} vertical={false} />
+                    <XAxis dataKey="m" tick={{ fontSize: 10, fill: P.neutral500 }} tickLine={false} axisLine={false} />
+                    <YAxis tick={{ fontSize: 10, fill: P.neutral500 }} tickLine={false} axisLine={false} />
+                    {keys.map((k, i) => (
+                      <Bar key={k} dataKey={k} fill={colors[i]} radius={[2, 2, 0, 0]} isAnimationActive={false} />
+                    ))}
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Donut charts */}
+      <div>
+        <p className="mb-3 text-[12px] font-medium text-ink/40 uppercase tracking-[0.06em]">Donut</p>
+        <div className="grid grid-cols-4 gap-4">
+          {variants.map(({ n, label }) => {
+            const colors = getChartColors(n)
+            const slices = Array.from({ length: n }, (_, i) => ({ v: 1, color: colors[i] }))
+            return (
+              <div key={n} className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[13px] font-medium text-ink/70">{label}</span>
+                  <div className="flex items-center gap-1 flex-wrap justify-end" style={{ maxWidth: 100 }}>
+                    {colors.map((c, i) => (
+                      <span key={i} className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: c }} />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <PieChart width={120} height={120} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                    <Pie data={slices} cx={60} cy={60} innerRadius={32} outerRadius={56}
+                      dataKey="v" startAngle={90} endAngle={-270} strokeWidth={2} stroke="white"
+                      isAnimationActive={false}>
+                      {slices.map((s, i) => <Cell key={i} fill={s.color} />)}
+                    </Pie>
+                  </PieChart>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
   )
 }

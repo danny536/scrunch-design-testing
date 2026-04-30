@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Home,
   Link2,
@@ -15,7 +15,10 @@ import {
   Waypoints,
   Network,
   SquareArrowOutUpRight,
+  Sun,
+  Moon,
 } from "lucide-react"
+import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 
 // ─── Nav structure ────────────────────────────────────────────────────────────
@@ -63,6 +66,12 @@ const navigation = [
 
 export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?: string }) {
   const [active, setActive] = useState(defaultActive)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  const isDark = mounted && theme === "dark"
 
   return (
     <div className="flex h-full w-[264px] shrink-0 flex-col border-r border-ink/[12%] bg-paper">
@@ -107,6 +116,21 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
         <button className="flex w-full items-center gap-2.5 rounded-scrunch-md px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors">
           <PanelLeftClose className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
           <span className="font-sans text-[14px] leading-none">Collapse menu</span>
+        </button>
+
+        {/* ── Theme toggle ─────────────────────── */}
+        <button
+          onClick={() => setTheme(isDark ? "light" : "dark")}
+          className="flex w-full items-center gap-2.5 rounded-scrunch-md px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors"
+        >
+          {isDark ? (
+            <Sun className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
+          ) : (
+            <Moon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
+          )}
+          <span className="font-sans text-[14px] leading-none">
+            {isDark ? "Light mode" : "Dark mode"}
+          </span>
         </button>
 
         <div className="mt-0.5 flex items-center gap-2.5 px-2 py-2">

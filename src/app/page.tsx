@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-const sections = [
+const sections: { title: string; description: string; href: string; label: string; disabled?: boolean }[] = [
   {
     title: "Shadcn Charts",
     description: "All chart types from the shadcn/ui registry — area, bar, line, pie, radar, radial, and tooltips.",

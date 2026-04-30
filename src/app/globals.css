@@ -93,42 +93,75 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --background: #1A1510;
+  --foreground: #EDE5D6;
+  --card: #231E18;
+  --card-foreground: #EDE5D6;
+  --popover: #231E18;
+  --popover-foreground: #EDE5D6;
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --secondary: #2D2720;
+  --secondary-foreground: #EDE5D6;
+  --muted: #2D2720;
+  --muted-foreground: #A89880;
+  --accent: #2D2720;
+  --accent-foreground: #EDE5D6;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  /* Scrunch data palette — dark surface variants */
-  --chart-1: #618FF9; /* blue-400  · lighter on dark  */
-  --chart-2: #93C0FE; /* blue-300  · Cloud Blue       */
-  --chart-3: #BFD2FE; /* blue-200                     */
-  --chart-4: #A3BC03; /* green-600                    */
-  --chart-5: #CCF60E; /* green-400                    */
-  --chart-6: #D8FC3B; /* green-300 · AI Green         */
-  --chart-7: #B8AB8E; /* neutral-400                  */
-  --chart-8: #F1E8C7; /* neutral-300 · Glaze          */
-  --chart-9: #F7F3EB; /* neutral-100 · Porcelain      */
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: rgba(237,229,214,0.12);
+  --input: rgba(237,229,214,0.15);
+  --ring: #8A8070;
+  /* Scrunch data palette — unchanged (vivid colors read fine on dark) */
+  --chart-1: #618FF9;
+  --chart-2: #93C0FE;
+  --chart-3: #BFD2FE;
+  --chart-4: #A3BC03;
+  --chart-5: #CCF60E;
+  --chart-6: #D8FC3B;
+  --chart-7: #B8AB8E;
+  --chart-8: #F1E8C7;
+  --chart-9: #F7F3EB;
+  --sidebar: #1A1510;
+  --sidebar-foreground: #EDE5D6;
+  --sidebar-primary: #3C67F5;
+  --sidebar-primary-foreground: #EDE5D6;
+  --sidebar-accent: #231E18;
+  --sidebar-accent-foreground: #EDE5D6;
+  --sidebar-border: rgba(237,229,214,0.12);
+  --sidebar-ring: #8A8070;
+
+  /* ── Scrunch semantic token overrides ── */
+  --color-paper:     #1A1510;
+  --color-porcelain: #231E18;
+  --color-glaze:     #2D2720;
+  --color-clay:      #C8BAA8;
+  --color-coal:      #DDD2BC;
+  --color-ink:       #EDE5D6;
+  --color-stone:     #F5EEE5;
+  --color-mud:       #A89880;
+
+  /* Neutral scale — inverted for dark surfaces */
+  --color-s-neutral-50:  #1A1510;
+  --color-s-neutral-100: #231E18;
+  --color-s-neutral-200: #2D2720;
+  --color-s-neutral-300: #3A3228;
+  --color-s-neutral-400: #5E5648;
+  --color-s-neutral-500: #8A8070;
+  --color-s-neutral-600: #A89880;
+  --color-s-neutral-700: #C8BAA8;
+  --color-s-neutral-800: #DDD2BC;
+  --color-s-neutral-900: #EDE5D6;
+  --color-s-neutral-950: #F5EEE5;
+
+  /* Shadows — black-based on dark surfaces */
+  --shadow-scrunch-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-scrunch-md: 0 4px 14px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-scrunch-lg: 0 24px 48px -12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Dark mode: promote bg-white to the card surface colour */
+.dark .bg-white {
+  background-color: var(--color-porcelain);
 }
 
 @layer base {
@@ -196,14 +229,14 @@
   /* ── Green Scale (AI → Botanic) ── */
   --color-s-green-50:  #FBFFE7;
   --color-s-green-100: #F2FFC5;
-  --color-s-green-200: #E9FE91;
-  --color-s-green-300: #D8FC3B; /* AI Green */
-  --color-s-green-400: #CCF60E;
-  --color-s-green-500: #BEE208;
-  --color-s-green-600: #A3BC03;
+  --color-s-green-200: #D8FC3B; /* AI Green   ← was 300 */
+  --color-s-green-300: #C3E536; /* even step from 200→700 (step 1/5) */
+  --color-s-green-400: #AECE31; /* even step (step 2/5) */
+  --color-s-green-500: #99B72C; /* even step (step 3/5) */
+  --color-s-green-600: #84A027; /* even step (step 4/5) */
   --color-s-green-700: #6E8920; /* Botanic Green */
-  --color-s-green-800: #656B0A;
-  --color-s-green-900: #484B0C;
+  --color-s-green-800: #586B16; /* evenly spaced between 700 and 950 */
+  --color-s-green-900: #434E0D; /* evenly spaced */
   --color-s-green-950: #2D3003;
 
   /* ── Neutral Scale (Paper → Coal) ── */
@@ -316,7 +349,7 @@
   --color-s-brown-950: #120A01;
 
   /* ── Shadows ── */
-  --shadow-scrunch-sm: 0 1px 2px rgba(29,17,7,0.06);
+  --shadow-scrunch-sm: 0 2px 8px rgba(29,17,7,0.05);
   --shadow-scrunch-md: 0 4px 14px rgba(29,17,7,0.08), 0 1px 2px rgba(29,17,7,0.04);
   --shadow-scrunch-lg: 0 24px 48px -12px rgba(29,17,7,0.18), 0 2px 4px rgba(29,17,7,0.06);
 }

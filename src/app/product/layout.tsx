@@ -8,7 +8,7 @@ export default function ProductLayout({ children }: { children: React.ReactNode 
       <ProductTopBar />
       <div className="flex flex-1 overflow-hidden">
         <ScrunchSidebar defaultActive="home" />
-        <main className="flex-1 overflow-y-auto bg-[#FBF9F6] px-8 py-6">
+        <main className="flex-1 overflow-y-auto bg-paper px-8 py-6">
           {children}
         </main>
       </div>
