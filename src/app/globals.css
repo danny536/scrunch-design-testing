@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono-var), ui-monospace, monospace;
+  --font-heading: var(--font-newsreader-var), Georgia, serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -18,6 +18,10 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-chart-9: var(--chart-9);
+  --color-chart-8: var(--chart-8);
+  --color-chart-7: var(--chart-7);
+  --color-chart-6: var(--chart-6);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -67,11 +71,16 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Scrunch data palette — matches reference sets 1–9 */
+  --chart-1: #2A4AEA; /* blue-600   · Scrunch Blue  */
+  --chart-2: #618FF9; /* blue-400                   */
+  --chart-3: #BFD2FE; /* blue-200   · Cloud Blue    */
+  --chart-4: #656B0A; /* green-800                  */
+  --chart-5: #A3BC03; /* green-600                  */
+  --chart-6: #CCF60E; /* green-400                  */
+  --chart-7: #40362E; /* neutral-800 · Clay         */
+  --chart-8: #B8AB8E; /* neutral-400                */
+  --chart-9: #F1E8C7; /* neutral-300 · Glaze        */
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -102,11 +111,16 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Scrunch data palette — dark surface variants */
+  --chart-1: #618FF9; /* blue-400  · lighter on dark  */
+  --chart-2: #93C0FE; /* blue-300  · Cloud Blue       */
+  --chart-3: #BFD2FE; /* blue-200                     */
+  --chart-4: #A3BC03; /* green-600                    */
+  --chart-5: #CCF60E; /* green-400                    */
+  --chart-6: #D8FC3B; /* green-300 · AI Green         */
+  --chart-7: #B8AB8E; /* neutral-400                  */
+  --chart-8: #F1E8C7; /* neutral-300 · Glaze          */
+  --chart-9: #F7F3EB; /* neutral-100 · Porcelain      */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -126,6 +140,13 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Guaranteed IBM Plex Mono utility — uses the next/font CSS var directly */
+@layer utilities {
+  .font-plex-mono {
+    font-family: var(--font-plex-mono-var), ui-monospace, monospace;
   }
 }
 
@@ -155,48 +176,50 @@
   /* ── Extended ── */
   --color-lime-bright: #CAFC00;
   --color-blue-deep:   #004AF0;
+  --color-cream-200:   #F1ECE4;
+  --color-cream-300:   #E4DCCC;
   --color-blue-mid-s:  #4E86F5;
 
-  /* ── Blue Scale ── */
+  /* ── Blue Scale (Cloud → Scrunch) ── */
   --color-s-blue-50:  #EFF4FF;
   --color-s-blue-100: #DBE5FE;
   --color-s-blue-200: #BFD2FE;
-  --color-s-blue-300: #93C0FE;
+  --color-s-blue-300: #93C0FE; /* Cloud Blue */
   --color-s-blue-400: #618FF9;
   --color-s-blue-500: #3C67F5;
-  --color-s-blue-600: #2A4AEA;
+  --color-s-blue-600: #2A4AEA; /* Scrunch Blue */
   --color-s-blue-700: #1E33D7;
   --color-s-blue-800: #1F2CAE;
   --color-s-blue-900: #1F2B89;
   --color-s-blue-950: #171C54;
 
-  /* ── Green Scale ── */
+  /* ── Green Scale (AI → Botanic) ── */
   --color-s-green-50:  #FBFFE7;
   --color-s-green-100: #F2FFC5;
   --color-s-green-200: #E9FE91;
-  --color-s-green-300: #D8FC3B;
+  --color-s-green-300: #D8FC3B; /* AI Green */
   --color-s-green-400: #CCF60E;
   --color-s-green-500: #BEE208;
   --color-s-green-600: #A3BC03;
-  --color-s-green-700: #6E8920;
+  --color-s-green-700: #6E8920; /* Botanic Green */
   --color-s-green-800: #656B0A;
   --color-s-green-900: #484B0C;
   --color-s-green-950: #2D3003;
 
-  /* ── Neutral Scale ── */
-  --color-s-neutral-50:  #FBF9F6;
-  --color-s-neutral-100: #F7F3EB;
+  /* ── Neutral Scale (Paper → Coal) ── */
+  --color-s-neutral-50:  #FBF9F6; /* Paper */
+  --color-s-neutral-100: #F7F3EB; /* Porcelain */
   --color-s-neutral-200: #F6EFDC;
-  --color-s-neutral-300: #F1E8C7;
+  --color-s-neutral-300: #F1E8C7; /* Glaze */
   --color-s-neutral-400: #B8AB8E;
   --color-s-neutral-500: #93886F;
   --color-s-neutral-600: #67624C;
   --color-s-neutral-700: #514B39;
-  --color-s-neutral-800: #40362E;
-  --color-s-neutral-900: #242220;
+  --color-s-neutral-800: #40362E; /* Clay */
+  --color-s-neutral-900: #242220; /* Coal */
   --color-s-neutral-950: #0F0C06;
 
-  /* ── Warning Scale ── */
+  /* ── Warning Scale (Amber) ── */
   --color-s-warning-50:  #FEFDE8;
   --color-s-warning-100: #FFFCC2;
   --color-s-warning-200: #FFF587;
@@ -209,7 +232,7 @@
   --color-s-warning-900: #734210;
   --color-s-warning-950: #432205;
 
-  /* ── Danger Scale ── */
+  /* ── Danger Scale (Red) ── */
   --color-s-danger-50:  #FFF3ED;
   --color-s-danger-100: #FFE4D4;
   --color-s-danger-200: #FFC5A8;
@@ -222,17 +245,75 @@
   --color-s-danger-900: #7F150F;
   --color-s-danger-950: #450605;
 
+  /* ── Purple Scale (Lavender → Violet) ── */
+  --color-s-purple-50:  #F7EAFF;
+  --color-s-purple-100: #EDD2FE;
+  --color-s-purple-200: #DC9EF5;
+  --color-s-purple-300: #C270E6;
+  --color-s-purple-400: #A66FEB; /* Violet */
+  --color-s-purple-500: #8B4DD4;
+  --color-s-purple-600: #7235BE;
+  --color-s-purple-700: #5A249F;
+  --color-s-purple-800: #411778;
+  --color-s-purple-900: #2C0E52;
+  --color-s-purple-950: #190831;
+
+  /* ── Pink Scale (Blush → Guava) ── */
+  --color-s-pink-50:  #FFE8FA;
+  --color-s-pink-100: #FFD0F5;
+  --color-s-pink-200: #FFA8EC;
+  --color-s-pink-300: #FF72DD;
+  --color-s-pink-400: #F04FD0; /* Guava */
+  --color-s-pink-500: #D430B4;
+  --color-s-pink-600: #B01E96;
+  --color-s-pink-700: #8A1478;
+  --color-s-pink-800: #640D58;
+  --color-s-pink-900: #420839;
+  --color-s-pink-950: #280522;
+
+  /* ── Orange Scale (Cream → Ember) ── */
+  --color-s-orange-50:  #FFF3E0;
+  --color-s-orange-100: #FFE4B8;
+  --color-s-orange-200: #FFCC7A;
+  --color-s-orange-300: #FFB030;
+  --color-s-orange-400: #FF9410;
+  --color-s-orange-500: #E87A00; /* Orange */
+  --color-s-orange-600: #C86200;
+  --color-s-orange-700: #A34C00;
+  --color-s-orange-800: #7E3800;
+  --color-s-orange-900: #5C2800;
+  --color-s-orange-950: #341500;
+
   /* ── Fonts ── */
   --font-newsreader: var(--font-newsreader-var), "Georgia", serif;
   --font-plex-mono:  var(--font-plex-mono-var), ui-monospace, "Menlo", monospace;
 
-  /* ── Border Radius ── */
-  --radius-scrunch-xs:   4px;
-  --radius-scrunch-sm:   8px;
-  --radius-scrunch-md:   12px;
-  --radius-scrunch-lg:   20px;
-  --radius-scrunch-xl:   24px;
+  /* ── Border Radius — semantic scale based on element size ── */
+  /* XS  8px   — elements 18–24px (badges, tiny chips)         */
+  /* S   12px  — elements 28–36px (buttons, controls)          */
+  /* M   16px  — elements 40–52px (dropdowns, nested panels)   */
+  /* L   24px  — elements ≥56px   (cards, panels)              */
+  /* XL  32px  — section-level containers (dialogs, sheets)    */
+  /* Max 9999px — pill / full-round shapes                     */
+  --radius-scrunch-xs:   8px;
+  --radius-scrunch-sm:   12px;
+  --radius-scrunch-md:   16px;
+  --radius-scrunch-lg:   24px;
+  --radius-scrunch-xl:   32px;
   --radius-scrunch-pill: 9999px;
+
+  /* ── Brown Scale (Tan → Espresso) ── */
+  --color-s-brown-50:  #FDF8F2;
+  --color-s-brown-100: #F5E8D3;
+  --color-s-brown-200: #E8CBA5;
+  --color-s-brown-300: #D4A76A; /* Tan */
+  --color-s-brown-400: #B8824A;
+  --color-s-brown-500: #956130; /* Caramel */
+  --color-s-brown-600: #744620;
+  --color-s-brown-700: #563214; /* Mahogany */
+  --color-s-brown-800: #3B2109;
+  --color-s-brown-900: #251403;
+  --color-s-brown-950: #120A01;
 
   /* ── Shadows ── */
   --shadow-scrunch-sm: 0 1px 2px rgba(29,17,7,0.06);

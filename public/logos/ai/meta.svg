@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+        fill-rule: evenodd;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="405.31" y1="-198.88" x2="381.31" y2="-222.88" gradientTransform="translate(-285.98 -149.16) scale(.75 -.75)" gradientUnits="userSpaceOnUse">
+      <stop offset=".13" stop-color="#ff97e3"/>
+      <stop offset=".18" stop-color="#d14fe1"/>
+      <stop offset=".34" stop-color="#0050e2"/>
+      <stop offset=".67" stop-color="#0050e2"/>
+      <stop offset=".81" stop-color="#00ddf4"/>
+      <stop offset=".86" stop-color="#23f8cc"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <path class="cls-1" d="M9,0c4.97,0,9,4.03,9,9s-4.03,9-9,9S0,13.97,0,9,4.03,0,9,0ZM9,2.72c-3.47,0-6.28,2.81-6.28,6.28s2.81,6.28,6.28,6.28c3.47,0,6.28-2.81,6.28-6.28,0-3.47-2.81-6.28-6.28-6.28Z"/>
+  </g>
+</svg>

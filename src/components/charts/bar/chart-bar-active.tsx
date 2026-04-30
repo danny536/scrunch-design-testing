@@ -2,8 +2,24 @@
 
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import type { BarShapeProps } from "recharts/types/cartesian/Bar"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart"
+
+export const description = "A bar chart with an active bar"
 
 const chartData = [
   { browser: "chrome", visitors: 187, fill: "var(--color-chrome)" },
@@ -14,13 +30,32 @@ const chartData = [
 ]
 
 const chartConfig = {
-  visitors: { label: "Visitors" },
-  chrome: { label: "Chrome", color: "var(--chart-1)" },
-  safari: { label: "Safari", color: "var(--chart-2)" },
-  firefox: { label: "Firefox", color: "var(--chart-3)" },
-  edge: { label: "Edge", color: "var(--chart-4)" },
-  other: { label: "Other", color: "var(--chart-5)" },
+  visitors: {
+    label: "Visitors",
+  },
+  chrome: {
+    label: "Chrome",
+    color: "var(--chart-1)",
+  },
+  safari: {
+    label: "Safari",
+    color: "var(--chart-2)",
+  },
+  firefox: {
+    label: "Firefox",
+    color: "var(--chart-3)",
+  },
+  edge: {
+    label: "Edge",
+    color: "var(--chart-4)",
+  },
+  other: {
+    label: "Other",
+    color: "var(--chart-5)",
+  },
 } satisfies ChartConfig
+
+const ACTIVE_INDEX = 2
 
 export function ChartBarActive() {
   return (
@@ -33,19 +68,47 @@ export function ChartBarActive() {
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="browser" tickLine={false} tickMargin={10} axisLine={false}
-              tickFormatter={(v) => chartConfig[v as keyof typeof chartConfig]?.label ?? v} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="visitors" strokeWidth={2} radius={8}
-              activeBar={({ ...props }) => (
-                <Rectangle {...props} fillOpacity={0.8} stroke={props.fill} strokeDasharray={4} strokeDashoffset={4} />
-              )} />
+            <XAxis
+              dataKey="browser"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) =>
+                chartConfig[value as keyof typeof chartConfig]?.label
+              }
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar
+              dataKey="visitors"
+              strokeWidth={2}
+              radius={8}
+              shape={({ index, ...props }: BarShapeProps) =>
+                index === ACTIVE_INDEX ? (
+                  <Rectangle
+                    {...props}
+                    fillOpacity={0.8}
+                    stroke={props.payload.fill}
+                    strokeDasharray={4}
+                    strokeDashoffset={4}
+                  />
+                ) : (
+                  <Rectangle {...props} />
+                )
+              }
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">Trending up by 5.2% this month <TrendingUp className="h-4 w-4" /></div>
-        <div className="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
+        <div className="flex gap-2 leading-none font-medium">
+          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months
+        </div>
       </CardFooter>
     </Card>
   )

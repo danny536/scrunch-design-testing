@@ -1,20 +1,38 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import { TrendingUp } from "lucide-react"
+import { Bar, BarChart, CartesianGrid, Cell, LabelList } from "recharts"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart"
+
+export const description = "A bar chart with negative values"
 
 const chartData = [
   { month: "January", visitors: 186 },
-  { month: "February", visitors: -80 },
-  { month: "March", visitors: 237 },
-  { month: "April", visitors: -73 },
-  { month: "May", visitors: 209 },
-  { month: "June", visitors: -214 },
+  { month: "February", visitors: 205 },
+  { month: "March", visitors: -207 },
+  { month: "April", visitors: 173 },
+  { month: "May", visitors: -209 },
+  { month: "June", visitors: 214 },
 ]
 
 const chartConfig = {
-  visitors: { label: "Visitors", color: "var(--chart-1)" },
+  visitors: {
+    label: "Visitors",
+  },
 } satisfies ChartConfig
 
 export function ChartBarNegative() {
@@ -24,24 +42,33 @@ export function ChartBarNegative() {
         <CardTitle>Bar Chart - Negative</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent className="px-2">
+      <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData} margin={{ top: 20 }}>
+          <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(v) => v.slice(0, 3)} />
-            <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel hideIndicator />} />
-            <ReferenceLine y={0} stroke="var(--border)" />
-            <Bar dataKey="visitors" radius={8}>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel hideIndicator />}
+            />
+            <Bar dataKey="visitors">
+              <LabelList position="top" dataKey="month" fillOpacity={1} />
               {chartData.map((item) => (
-                <Cell key={item.month} fill={item.visitors > 0 ? "var(--color-visitors)" : "hsl(var(--muted-foreground))"} />
+                <Cell
+                  key={item.month}
+                  fill={item.visitors > 0 ? "var(--chart-1)" : "var(--chart-2)"}
+                />
               ))}
             </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">Showing visitor gains and losses per month</div>
+        <div className="flex gap-2 leading-none font-medium">
+          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months
+        </div>
       </CardFooter>
     </Card>
   )

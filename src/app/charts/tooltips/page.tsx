@@ -5,6 +5,8 @@ import { ChartTooltipLabelNone } from "@/components/charts/tooltips/chart-toolti
 import { ChartTooltipLabelCustom } from "@/components/charts/tooltips/chart-tooltip-label-custom"
 import { ChartTooltipFormatter } from "@/components/charts/tooltips/chart-tooltip-formatter"
 import { ChartTooltipIcons } from "@/components/charts/tooltips/chart-tooltip-icons"
+import { ChartTooltipAdvanced } from "@/components/charts/tooltips/chart-tooltip-advanced"
+import { ChartTooltipLabelFormatter } from "@/components/charts/tooltips/chart-tooltip-label-formatter"
 
 export default function TooltipsPage() {
   return (
@@ -17,6 +19,8 @@ export default function TooltipsPage() {
         <ChartTooltipLabelCustom />
         <ChartTooltipFormatter />
         <ChartTooltipIcons />
+        <ChartTooltipAdvanced />
+        <ChartTooltipLabelFormatter />
       </div>
     </div>
   )

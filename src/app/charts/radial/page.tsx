@@ -2,6 +2,7 @@ import { ChartRadialSimple } from "@/components/charts/radial/chart-radial-simpl
 import { ChartRadialLabel } from "@/components/charts/radial/chart-radial-label"
 import { ChartRadialGrid } from "@/components/charts/radial/chart-radial-grid"
 import { ChartRadialText } from "@/components/charts/radial/chart-radial-text"
+import { ChartRadialShape } from "@/components/charts/radial/chart-radial-shape"
 import { ChartRadialStacked } from "@/components/charts/radial/chart-radial-stacked"
 
 export default function RadialChartsPage() {
@@ -12,6 +13,7 @@ export default function RadialChartsPage() {
         <ChartRadialLabel />
         <ChartRadialGrid />
         <ChartRadialText />
+        <ChartRadialShape />
         <ChartRadialStacked />
       </div>
     </div>

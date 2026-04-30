@@ -16,7 +16,7 @@ export default function ChartsLayout({ children }: { children: React.ReactNode }
       {/* Page header */}
       <div className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-10">
-          <h1 className="text-3xl font-bold tracking-tight">Charts</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Shadcn Charts</h1>
           <p className="mt-2 text-muted-foreground text-base">
             Beautiful charts built with Recharts and shadcn/ui.
           </p>
