@@ -84,14 +84,13 @@ export function ChartBarActive() {
             <Bar
               dataKey="visitors"
               strokeWidth={2}
-              radius={8}
               shape={({ index, ...props }: BarShapeProps) =>
                 index === ACTIVE_INDEX ? (
                   <Rectangle
                     {...props}
                     fillOpacity={0.8}
                     stroke={props.payload.fill}
-                    strokeDasharray={4}
+                    strokeDasharray="2 3"
                     strokeDashoffset={4}
                   />
                 ) : (

@@ -150,7 +150,7 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
 
 function NewBadge({ children }: { children: string }) {
   return (
-    <span className="ml-0.5 inline-flex items-center rounded-full border border-s-green-400 bg-s-green-100 px-1.5 py-px font-plex-mono text-[9px] uppercase tracking-[0.05em] text-s-green-700 leading-none">
+    <span className="ml-auto inline-flex items-center rounded-full bg-s-green-200 px-2 py-0.5 font-sans text-[11px] font-medium text-s-green-900 leading-none outline-none">
       {children}
     </span>
   )

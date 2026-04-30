@@ -8,7 +8,7 @@ export function ProductTopBar() {
     <div className="flex h-14 w-full shrink-0 items-center gap-2 border-b border-ink/[12%] bg-paper px-3">
       {/* Logo mark */}
       <div className="flex h-8 w-8 shrink-0 items-center justify-center">
-        <Image src="/logo-mark.svg" alt="Scrunch" width={24} height={24} />
+        <Image src="/logo-mark.svg" alt="Scrunch" width={28} height={28} className="dark:invert" />
       </div>
 
       {/* Divider */}
@@ -17,7 +17,7 @@ export function ProductTopBar() {
       {/* Workspace switcher */}
       <button className="flex items-center gap-1.5 rounded-scrunch-sm px-1.5 py-1 hover:bg-porcelain transition-colors">
         <span className="font-sans text-[14px] font-medium text-ink leading-none">Scrunch AI</span>
-        <span className="inline-flex items-center rounded-full border border-ink/20 px-1.5 py-px font-plex-mono text-[9px] uppercase tracking-[0.05em] text-ink/50">
+        <span className="inline-flex items-center rounded-full bg-s-neutral-200 px-2 py-0.5 font-plex-mono text-[10px] uppercase tracking-[0.06em] text-ink/80">
           Agency
         </span>
         <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 text-ink/35" />

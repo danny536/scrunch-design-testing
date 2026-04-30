@@ -275,9 +275,9 @@ export default function StyleGuidePage() {
               <div style={{ gridColumn: 2, gridRow: 1 }}><DataSwatch bg="#618FF9" set="Data set 2" token="blue-400"    hex="618FF9" dark /></div>
               <div style={{ gridColumn: 3, gridRow: 1 }}><DataSwatch bg="#BFD2FE" set="Data set 3" token="blue-200"    hex="BFD2FE" /></div>
               {/* Row 2: Greens */}
-              <div style={{ gridColumn: 1, gridRow: 2 }}><DataSwatch bg="#656B0A" set="Data set 4" token="green-800"   hex="656B0A" dark /></div>
-              <div style={{ gridColumn: 2, gridRow: 2 }}><DataSwatch bg="#A3BC03" set="Data set 5" token="green-600"   hex="A3BC03" dark /></div>
-              <div style={{ gridColumn: 3, gridRow: 2 }}><DataSwatch bg="#CCF60E" set="Data set 6" token="green-400"   hex="CCF60E" /></div>
+              <div style={{ gridColumn: 1, gridRow: 2 }}><DataSwatch bg="#586B16" set="Data set 4" token="green-800"   hex="586B16" dark /></div>
+              <div style={{ gridColumn: 2, gridRow: 2 }}><DataSwatch bg="#84A027" set="Data set 5" token="green-600"   hex="84A027" dark /></div>
+              <div style={{ gridColumn: 3, gridRow: 2 }}><DataSwatch bg="#AECE31" set="Data set 6" token="green-400"   hex="AECE31" /></div>
               {/* Row 3: Neutrals + Empty */}
               <div style={{ gridColumn: 1, gridRow: 3 }}><DataSwatch bg="#40362E" set="Data set 7" token="neutral-800" hex="40362E" dark /></div>
               <div style={{ gridColumn: 2, gridRow: 3 }}><DataSwatch bg="#B8AB8E" set="Data set 8" token="neutral-400" hex="B8AB8E" /></div>
@@ -292,9 +292,9 @@ export default function StyleGuidePage() {
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#2A4AEA" strokeWidth="14" strokeDasharray="32 251" strokeDashoffset="0"    transform="rotate(-90 50 50)" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#618FF9" strokeWidth="14" strokeDasharray="22 251" strokeDashoffset="-32"  transform="rotate(-90 50 50)" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#BFD2FE" strokeWidth="14" strokeDasharray="22 251" strokeDashoffset="-54"  transform="rotate(-90 50 50)" />
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#656B0A" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-76"  transform="rotate(-90 50 50)" />
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#A3BC03" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-96"  transform="rotate(-90 50 50)" />
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#CCF60E" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-116" transform="rotate(-90 50 50)" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#586B16" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-76"  transform="rotate(-90 50 50)" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#84A027" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-96"  transform="rotate(-90 50 50)" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#AECE31" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-116" transform="rotate(-90 50 50)" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#40362E" strokeWidth="14" strokeDasharray="22 251" strokeDashoffset="-136" transform="rotate(-90 50 50)" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#B8AB8E" strokeWidth="14" strokeDasharray="20 251" strokeDashoffset="-158" transform="rotate(-90 50 50)" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#F1E8C7" strokeWidth="14" strokeDasharray="18 251" strokeDashoffset="-178" transform="rotate(-90 50 50)" />

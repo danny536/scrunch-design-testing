@@ -31,7 +31,7 @@ export function ChartBarDefault() {
             <CartesianGrid vertical={false} />
             <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(v) => v.slice(0, 3)} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+            <Bar dataKey="desktop" fill="var(--color-desktop)" />
           </BarChart>
         </ChartContainer>
       </CardContent>

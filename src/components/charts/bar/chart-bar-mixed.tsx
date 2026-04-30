@@ -36,7 +36,7 @@ export function ChartBarMixed() {
               tickFormatter={(v) => chartConfig[v as keyof typeof chartConfig]?.label ?? v} />
             <XAxis dataKey="visitors" type="number" hide />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="visitors" radius={5} />
+            <Bar dataKey="visitors" />
           </BarChart>
         </ChartContainer>
       </CardContent>

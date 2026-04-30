@@ -18,6 +18,9 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-chart-12: var(--chart-12);
+  --color-chart-11: var(--chart-11);
+  --color-chart-10: var(--chart-10);
   --color-chart-9: var(--chart-9);
   --color-chart-8: var(--chart-8);
   --color-chart-7: var(--chart-7);
@@ -71,16 +74,27 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  /* Scrunch data palette — matches reference sets 1–9 */
-  --chart-1: #2A4AEA; /* blue-600   · Scrunch Blue  */
-  --chart-2: #618FF9; /* blue-400                   */
-  --chart-3: #BFD2FE; /* blue-200   · Cloud Blue    */
-  --chart-4: #656B0A; /* green-800                  */
-  --chart-5: #A3BC03; /* green-600                  */
-  --chart-6: #CCF60E; /* green-400                  */
-  --chart-7: #40362E; /* neutral-800 · Clay         */
-  --chart-8: #B8AB8E; /* neutral-400                */
-  --chart-9: #F1E8C7; /* neutral-300 · Glaze        */
+  /* Chart grid line color — subtle on light surfaces */
+  --chart-grid: rgba(29,17,7,0.08);
+  /* Tooltip */
+  --tooltip-bg: rgba(255,255,255,0.85);
+  --tooltip-border: rgba(29,17,7,0.07);
+  --tooltip-shadow: 0 2px 8px rgba(29,17,7,0.05);
+
+  /* Scrunch data palette — slots 1–6 = CHART_COLORS_6 input order (contrast-first)
+     slots 7–12 = extended family colors for 7–12 series charts              */
+  --chart-1:  #3C67F5; /* Input 1 · blue-500         */
+  --chart-2:  #AECE31; /* Input 2 · green-400        */
+  --chart-3:  #B8AB8E; /* Input 3 · neutral-400      */
+  --chart-4:  #93C0FE; /* Input 4 · blue-300         */
+  --chart-5:  #84A027; /* Input 5 · green-600        */
+  --chart-6:  #93886F; /* Input 6 · neutral-500      */
+  --chart-7:  #1F2CAE; /* ext · blue-800             */
+  --chart-8:  #586B16; /* ext · green-800            */
+  --chart-9:  #40362E; /* ext · neutral-800 · Clay   */
+  --chart-10: #88520B; /* ext · amber-800            */
+  --chart-11: #EFBE03; /* ext · amber-500            */
+  --chart-12: #FFE843; /* ext · amber-300            */
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -111,16 +125,26 @@
   --border: rgba(237,229,214,0.12);
   --input: rgba(237,229,214,0.15);
   --ring: #8A8070;
-  /* Scrunch data palette — unchanged (vivid colors read fine on dark) */
-  --chart-1: #618FF9;
-  --chart-2: #93C0FE;
-  --chart-3: #BFD2FE;
-  --chart-4: #A3BC03;
-  --chart-5: #CCF60E;
-  --chart-6: #D8FC3B;
-  --chart-7: #B8AB8E;
-  --chart-8: #F1E8C7;
-  --chart-9: #F7F3EB;
+  /* Chart grid line — less prominent on dark surfaces */
+  --chart-grid: rgba(237,229,214,0.07);
+  /* Tooltip — semi-transparent dark in dark mode */
+  --tooltip-bg: rgba(36,34,32,0.88);
+  --tooltip-border: rgba(255,255,255,0.10);
+  --tooltip-shadow: 0 2px 12px rgba(0,0,0,0.35);
+
+  /* Scrunch data palette — lighter variants for dark surfaces */
+  --chart-1:  #618FF9; /* Input 1 · blue-400        */
+  --chart-2:  #D8FC3B; /* Input 2 · green-200 / AI  */
+  --chart-3:  #F1E8C7; /* Input 3 · neutral-300     */
+  --chart-4:  #BFD2FE; /* Input 4 · blue-200        */
+  --chart-5:  #AECE31; /* Input 5 · green-400       */
+  --chart-6:  #B8AB8E; /* Input 6 · neutral-400     */
+  --chart-7:  #3C67F5; /* ext · blue-500            */
+  --chart-8:  #84A027; /* ext · green-600           */
+  --chart-9:  #93886F; /* ext · neutral-500         */
+  --chart-10: #CE9300; /* ext · amber-600           */
+  --chart-11: #FFE843; /* ext · amber-300           */
+  --chart-12: #FFF587; /* ext · amber-200           */
   --sidebar: #1A1510;
   --sidebar-foreground: #EDE5D6;
   --sidebar-primary: #3C67F5;
@@ -166,7 +190,10 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+  *:focus-visible {
+    @apply outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
@@ -255,7 +282,7 @@
   /* ── Warning Scale (Amber) ── */
   --color-s-warning-50:  #FEFDE8;
   --color-s-warning-100: #FFFCC2;
-  --color-s-warning-200: #FFF587;
+  --color-s-warning-200: #FFFC0C;
   --color-s-warning-300: #FFE843;
   --color-s-warning-400: #FFDA1F;
   --color-s-warning-500: #EFBE03;

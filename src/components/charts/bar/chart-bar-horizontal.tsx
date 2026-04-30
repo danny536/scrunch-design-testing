@@ -31,7 +31,7 @@ export function ChartBarHorizontal() {
             <XAxis type="number" dataKey="desktop" hide />
             <YAxis dataKey="month" type="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(v) => v.slice(0, 3)} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={5} />
+            <Bar dataKey="desktop" fill="var(--color-desktop)" />
           </BarChart>
         </ChartContainer>
       </CardContent>

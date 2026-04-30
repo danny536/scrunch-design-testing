@@ -46,6 +46,8 @@ import {
   Area,
 } from "recharts"
 
+import { CHART_COLORS_12, getChartColors } from "@/lib/chart-palette"
+
 // ─── Scrunch palette tokens — synced to colors-palette-3.html ────────────────
 const P = {
   blue600:    "#2A4AEA", // SCRUNCH
@@ -58,10 +60,10 @@ const P = {
   blue950:    "#171C54",
 
   green700:   "#6E8920", // BOTANIC
-  green600:   "#A3BC03",
-  green500:   "#BEE208",
-  green400:   "#CCF60E",
-  green300:   "#D8FC3B", // AI
+  green600:   "#84A027",
+  green500:   "#99B72C",
+  green400:   "#AECE31",
+  green300:   "#C3E536",
   green200:   "#E9FE91",
   green100:   "#F2FFC5",
   green50:    "#FBFFE7",
@@ -110,7 +112,7 @@ const P = {
   brown400:   "#B8824A",
   brown300:   "#D4A76A", // Tan
 
-  green800:   "#656B0A",
+  green800:   "#586B16",
   neutral800: "#40362E", // Clay
   orange800:  "#7E3800",
   warning800: "#88520B",
@@ -127,43 +129,8 @@ const P = {
   ds9: "#F4E8C3", // Cream
 }
 
-// ─── Data palette rules ───────────────────────────────────────────────────────
-// 1–6 series: hand-picked for contrast (alternating across families)
-// 7+ series: full family cascade, dark→light (Blues → Greens → Neutrals → Ambers)
-
-const DATA_PALETTE_SMALL = [
-  { hex: "#3C67F5", label: "Blue 500"    },  //  1
-  { hex: "#CCF60E", label: "Green 400"   },  //  2
-  { hex: "#F1E8C7", label: "Neutral 300" },  //  3
-  { hex: "#93C0FE", label: "Blue 300"    },  //  4
-  { hex: "#A3BC03", label: "Green 600"   },  //  5
-  { hex: "#93886F", label: "Neutral 500" },  //  6
-]
-
-const DATA_PALETTE = [
-  // ── Blues ──────────────────────────────────────────────────────────────────
-  { hex: "#1F2CAE", label: "Blue 800"    },  //  1
-  { hex: "#3C67F5", label: "Blue 500"    },  //  2
-  { hex: "#93C0FE", label: "Blue 300"    },  //  3
-  // ── Greens ─────────────────────────────────────────────────────────────────
-  { hex: "#656B0A", label: "Green 800"   },  //  4
-  { hex: "#A3BC03", label: "Green 600"   },  //  5
-  { hex: "#CCF60E", label: "Green 400"   },  //  6
-  // ── Neutrals ───────────────────────────────────────────────────────────────
-  { hex: "#40362E", label: "Neutral 800" },  //  7
-  { hex: "#93886F", label: "Neutral 500" },  //  8
-  { hex: "#F1E8C7", label: "Neutral 300" },  //  9
-  // ── Ambers ─────────────────────────────────────────────────────────────────
-  { hex: "#88520B", label: "Amber 800"   },  // 10
-  { hex: "#EFBE03", label: "Amber 500"   },  // 11
-  { hex: "#FFE843", label: "Amber 300"   },  // 12
-]
-
-export function getChartColors(n: number): string[] {
-  const clamped = Math.min(n, 12)
-  if (clamped <= 6) return DATA_PALETTE_SMALL.slice(0, clamped).map(c => c.hex)
-  return DATA_PALETTE.slice(0, clamped).map(c => c.hex)
-}
+// ─── Data palette — imported from @/lib/chart-palette ────────────────────────
+// Edit chart-palette.ts to update all charts at once.
 
 // ─── Chart data ───────────────────────────────────────────────────────────────
 
@@ -193,16 +160,18 @@ const citationsSparkline = [
   { v: 5 }, { v: 4 }, { v: 3 }, { v: 4 }, { v: 3 }, { v: 2 }, { v: 2 },
 ]
 
+const [posC1, posC2, posC3] = getChartColors(3)
+
 const positionData = [
-  { name: "Top",    value: 66, color: P.ds6 },
-  { name: "Middle", value: 15, color: P.green400 },
-  { name: "Bottom", value: 19, color: P.neutral400 },
+  { name: "Top",    value: 66, color: posC1 },
+  { name: "Middle", value: 15, color: posC2 },
+  { name: "Bottom", value: 19, color: posC3 },
 ]
 
 const sentimentData = [
-  { name: "Positive", value: 46, color: P.ds6 },
-  { name: "Mixed",    value: 21, color: P.green400 },
-  { name: "Negative", value: 33, color: P.neutral400 },
+  { name: "Positive", value: 46, color: posC1 },
+  { name: "Mixed",    value: 21, color: posC2 },
+  { name: "Negative", value: 33, color: posC3 },
 ]
 
 const citationsData = [
@@ -214,32 +183,34 @@ const citationsData = [
 ]
 
 const topBrands = [
-  { rank: 1, name: "Oral-B",    pct: 56, color: getChartColors(5)[0], highlight: false },
-  { rank: 2, name: "Colgate",   pct: 54, color: getChartColors(5)[1], highlight: true  },
-  { rank: 3, name: "Crest",     pct: 46, color: getChartColors(5)[2], highlight: false },
-  { rank: 4, name: "Sensodyne", pct: 43, color: getChartColors(5)[3], highlight: false },
-  { rank: 5, name: "Aquafresh", pct: 1,  color: getChartColors(5)[4], highlight: false },
+  { rank: 1, name: "Oral-B",    pct: 56, color: getChartColors(6)[0], highlight: false },
+  { rank: 2, name: "Colgate",   pct: 54, color: getChartColors(6)[1], highlight: true  },
+  { rank: 3, name: "Crest",     pct: 46, color: getChartColors(6)[2], highlight: false },
+  { rank: 4, name: "Sensodyne", pct: 43, color: getChartColors(6)[3], highlight: false },
+  { rank: 5, name: "Aquafresh", pct: 1,  color: getChartColors(6)[4], highlight: false },
+  { rank: 6, name: "Pepsodent", pct: 0,  color: getChartColors(6)[5], highlight: false },
 ]
+const BRANDS_PER_PAGE = 5
 
 // ─── Platform icons ───────────────────────────────────────────────────────────
 
 function PlatformIcons() {
   const platforms = [
     { src: "/logos/ai/ai-overviews.svg",  label: "AI Overviews"  },
-    { src: "/logos/ai/chatgpt.svg",        label: "ChatGPT"       },
+    { src: "/logos/ai/chatgpt.svg",        label: "ChatGPT",       darkInvert: true },
     { src: "/logos/ai/claude.svg",         label: "Claude"        },
     { src: "/logos/ai/copilot.svg",        label: "Copilot"       },
     { src: "/logos/ai/gemini.svg",         label: "Gemini"        },
     { src: "/logos/ai/google.svg",         label: "Google"        },
-    { src: "/logos/ai/grok.svg",           label: "Grok"          },
+    { src: "/logos/ai/grok.svg",           label: "Grok",          darkInvert: true },
     { src: "/logos/ai/meta.svg",           label: "Meta"          },
     { src: "/logos/ai/perplexity.svg",     label: "Perplexity"    },
   ]
   return (
     <div className="flex items-center gap-3 flex-wrap">
-      {platforms.map(({ src, label }) => (
+      {platforms.map(({ src, label, darkInvert }) => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img key={label} src={src} alt={label} width={22} height={22} className="shrink-0" />
+        <img key={label} src={src} alt={label} width={22} height={22} className={`shrink-0${darkInvert ? " dark:invert" : ""}`} />
       ))}
     </div>
   )
@@ -316,13 +287,13 @@ function DonutCard({
       <div className="flex items-center gap-4">
         {/* Donut */}
         <div className="relative shrink-0">
-          <PieChart width={140} height={140} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+          <PieChart width={180} height={180} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
             <Pie
               data={data}
-              cx={70}
-              cy={70}
-              innerRadius={46}
-              outerRadius={64}
+              cx={90}
+              cy={90}
+              innerRadius={58}
+              outerRadius={82}
               dataKey="value"
               startAngle={90}
               endAngle={-270}
@@ -334,7 +305,7 @@ function DonutCard({
             </Pie>
           </PieChart>
           <div className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-            <span className="text-[19px] font-normal font-plex-mono text-ink" style={{ lineHeight: 1 }}>{centerValue}</span>
+            <span className="text-[21px] font-normal font-plex-mono text-ink" style={{ lineHeight: 1 }}>{centerValue}</span>
           </div>
         </div>
 
@@ -352,24 +323,19 @@ function DonutCard({
 
       {/* Sparkline + trend — single inline row */}
       {(() => {
-        const trendColor = isPositive ? P.green600 : P.danger500
+        const trendColor = isPositive ? CHART_COLORS_12[5] : P.danger500
         const gradId = `sg-${title.replace(/[^a-zA-Z]/g, "")}`
         return (
           <div className="mt-3 pt-2 flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <Sparkline data={sparklineData} color={trendColor} gradId={gradId} />
             </div>
-            <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-              isPositive ? "border-s-green-500 text-s-green-600" : "border-s-danger-400 text-s-danger-500"
+            <div className={`shrink-0 flex items-center gap-1 rounded-scrunch-pill px-2 py-0.5 ${
+              isPositive ? "bg-s-green-200 text-s-green-800" : "bg-s-danger-100 text-s-danger-700"
             }`}>
               {isPositive ? <ArrowUp className="h-2.5 w-2.5" /> : <ArrowDown className="h-2.5 w-2.5" />}
-            </span>
-            <span className="text-[12px] text-ink/50 whitespace-nowrap">{trendLabel}</span>
-            <span className={`rounded-scrunch-pill border px-2 py-0.5 text-[11px] font-medium tabular-nums shrink-0 ${
-              isPositive ? "border-s-green-400 text-s-green-600" : "border-s-danger-400 text-s-danger-500"
-            }`}>
-              {trendValue}
-            </span>
+              <span className="text-[11px] font-medium tabular-nums">{trendValue}</span>
+            </div>
           </div>
         )
       })()}
@@ -382,6 +348,12 @@ function DonutCard({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ProductDashboard() {
+  const [brandPage, setBrandPage] = useState(0)
+  const totalBrandPages = Math.ceil(topBrands.length / BRANDS_PER_PAGE)
+  const pagedBrands = topBrands.slice(brandPage * BRANDS_PER_PAGE, (brandPage + 1) * BRANDS_PER_PAGE)
+  const brandStart = brandPage * BRANDS_PER_PAGE + 1
+  const brandEnd = Math.min((brandPage + 1) * BRANDS_PER_PAGE, topBrands.length)
+
   return (
     <div className="space-y-6 pb-10">
 
@@ -420,8 +392,10 @@ export default function ProductDashboard() {
               </div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg">
-                <Play className="h-4 w-4 translate-x-0.5 text-ink" style={{ fill: "currentColor" }} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-ink/80 shadow-lg">
+                <svg width="14" height="14" viewBox="0 0 10 10" className="text-ink dark:text-paper" fill="currentColor">
+                  <polygon points="2,1 9,5 2,9" strokeLinejoin="miter" />
+                </svg>
               </div>
             </div>
           </div>
@@ -432,36 +406,36 @@ export default function ProductDashboard() {
       <div>
         <h2 className="mb-3 text-[15px] font-semibold text-ink">Insights &amp; Action Items</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-scrunch-lg bg-white px-6 py-5 shadow-scrunch-sm">
+          <div className="rounded-scrunch-lg bg-white dark:bg-s-neutral-900 px-6 py-5 shadow-scrunch-sm">
             <div className="flex items-center gap-2 mb-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50">
-                <Users className="h-4 w-4 text-s-blue-600" strokeWidth={1.6} />
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50 dark:bg-s-blue-900/30">
+                <Users className="h-4 w-4 text-s-blue-600 dark:text-s-blue-400" strokeWidth={1.6} />
               </div>
-              <span className="text-[14px] font-semibold text-ink">Suggested Competitors</span>
+              <span className="text-[14px] font-semibold text-ink dark:text-white">Suggested Competitors</span>
             </div>
-            <p className="text-[14px] text-ink/60 leading-relaxed">
+            <p className="text-[14px] text-ink/60 dark:text-white/50 leading-relaxed">
               Based on prompt responses and trends data, we&apos;ve identified{" "}
-              <strong className="text-ink font-semibold">2 potential competitive brands</strong>{" "}
+              <strong className="text-ink dark:text-white font-semibold">2 potential competitive brands</strong>{" "}
               you may want to track.
             </p>
-            <button className="mt-4 text-[13px] font-medium text-s-blue-600 hover:text-s-blue-700 transition-colors">
+            <button className="mt-4 text-[13px] font-medium text-s-blue-600 dark:text-s-blue-400 hover:text-s-blue-700 dark:hover:text-s-blue-300 transition-colors">
               Take action →
             </button>
           </div>
 
-          <div className="rounded-scrunch-lg bg-white px-6 py-5 shadow-scrunch-sm">
+          <div className="rounded-scrunch-lg bg-white dark:bg-s-neutral-900 px-6 py-5 shadow-scrunch-sm">
             <div className="flex items-center gap-2 mb-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50">
-                <LayoutGrid className="h-4 w-4 text-s-blue-600" strokeWidth={1.6} />
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-s-blue-50 dark:bg-s-blue-900/30">
+                <LayoutGrid className="h-4 w-4 text-s-blue-600 dark:text-s-blue-400" strokeWidth={1.6} />
               </div>
-              <span className="text-[14px] font-semibold text-ink">Suggested Sub-Brands</span>
+              <span className="text-[14px] font-semibold text-ink dark:text-white">Suggested Sub-Brands</span>
             </div>
-            <p className="text-[14px] text-ink/60 leading-relaxed">
+            <p className="text-[14px] text-ink/60 dark:text-white/50 leading-relaxed">
               Based on AI responses and brand knowledge, we&apos;ve identified{" "}
-              <strong className="text-ink font-semibold">25+ potential sub-brands</strong>{" "}
+              <strong className="text-ink dark:text-white font-semibold">25+ potential sub-brands</strong>{" "}
               you may want to track.
             </p>
-            <button className="mt-4 text-[13px] font-medium text-s-blue-600 hover:text-s-blue-700 transition-colors">
+            <button className="mt-4 text-[13px] font-medium text-s-blue-600 dark:text-s-blue-400 hover:text-s-blue-700 dark:hover:text-s-blue-300 transition-colors">
               Take action →
             </button>
           </div>
@@ -529,7 +503,8 @@ export default function ProductDashboard() {
             <div className="flex-1 min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={competitiveData} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
-                <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} />
+
+                <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
                 <XAxis
                   dataKey="date"
                   tick={{ fontSize: 11, fill: P.neutral500 }}
@@ -546,12 +521,12 @@ export default function ProductDashboard() {
                   axisLine={false}
                 />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
+                  contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
                   formatter={(v, name) => [v !== undefined ? `${v}%` : "", name as string]}
                   itemSorter={(item) => -(item.value as number)}
                 />
                 <Line type="monotone" dataKey="oralB"     stroke={getChartColors(5)[0]} strokeWidth={2}   dot={false} name="Oral-B" />
-                <Line type="monotone" dataKey="colgate"   stroke={getChartColors(5)[1]} strokeWidth={2}   dot={false} name="Colgate" />
+                <Line type="monotone" dataKey="colgate"   stroke={getChartColors(5)[1]} strokeWidth={3}   dot={false} name="Colgate" />
                 <Line type="monotone" dataKey="crest"     stroke={getChartColors(5)[2]} strokeWidth={1.5} dot={false} name="Crest" />
                 <Line type="monotone" dataKey="sensodyne" stroke={getChartColors(5)[3]} strokeWidth={1.5} dot={false} name="Sensodyne" />
                 <Line type="monotone" dataKey="aquafresh" stroke={getChartColors(5)[4]} strokeWidth={1}   dot={false} name="Aquafresh" />
@@ -568,11 +543,11 @@ export default function ProductDashboard() {
               <Info className="h-3.5 w-3.5 text-ink/30" />
             </div>
             <div className="space-y-0">
-              {topBrands.map((brand) => (
+              {pagedBrands.map((brand) => (
                 <div
                   key={brand.name}
                   className={`flex items-center gap-3 px-2 py-2.5 -mx-2 rounded-scrunch-sm ${
-                    brand.highlight ? "bg-s-green-50" : ""
+                    brand.highlight ? "bg-s-neutral-50 dark:bg-s-neutral-200" : ""
                   }`}
                 >
                   <span className="text-[13px] text-ink/40 tabular-nums w-3 shrink-0">{brand.rank}.</span>
@@ -596,11 +571,19 @@ export default function ProductDashboard() {
               ))}
             </div>
             <div className="mt-4 flex items-center justify-end gap-1 text-[12px] text-ink/50">
-              <button className="rounded p-1 hover:bg-s-neutral-100 transition-colors">
+              <button
+                onClick={() => setBrandPage(p => Math.max(0, p - 1))}
+                disabled={brandPage === 0}
+                className="rounded p-1 hover:bg-s-neutral-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
                 <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-              <span>1–5 of 6</span>
-              <button className="rounded p-1 hover:bg-s-neutral-100 transition-colors">
+              <span className="font-medium tabular-nums">{brandStart}–{brandEnd} of {topBrands.length}</span>
+              <button
+                onClick={() => setBrandPage(p => Math.min(totalBrandPages - 1, p + 1))}
+                disabled={brandPage === totalBrandPages - 1}
+                className="rounded p-1 hover:bg-s-neutral-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -609,7 +592,7 @@ export default function ProductDashboard() {
       </div>
 
       {/* ── Three stat cards ──────────────────────────── */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 items-start">
 
         <DonutCard
           title="Position (% of total)"
@@ -617,12 +600,12 @@ export default function ProductDashboard() {
           centerIcon={<ArrowUp className="h-3 w-3 inline" />}
           data={positionData}
           rows={[
-            { icon: <ArrowUp   className="h-3.5 w-3.5 inline" />, label: "Top",    value: 66, color: P.ds6 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Middle", value: 15, color: P.green400 },
-            { icon: <ArrowDown className="h-3.5 w-3.5 inline" />, label: "Bottom", value: 19, color: P.neutral400 },
+            { icon: <ArrowUp   className="h-3.5 w-3.5 inline" />, label: "Top",    value: 66, color: posC1 },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Middle", value: 15, color: posC2 },
+            { icon: <ArrowDown className="h-3.5 w-3.5 inline" />, label: "Bottom", value: 19, color: posC3 },
           ]}
           sparklineData={positionSparkline}
-          sparklineColor={P.ds3}
+          sparklineColor={CHART_COLORS_12[2]}
           trendLabel="Last 12 weeks"
           trendValue="-4%"
         />
@@ -633,16 +616,16 @@ export default function ProductDashboard() {
           centerIcon={<ThumbsUp className="h-3 w-3 inline" />}
           data={sentimentData}
           rows={[
-            { icon: <ThumbsUp   className="h-3.5 w-3.5 inline" />, label: "Positive", value: 46, color: P.ds6 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Mixed",    value: 21, color: P.green400 },
-            { icon: <ThumbsDown className="h-3.5 w-3.5 inline" />, label: "Negative", value: 33, color: P.neutral400 },
+            { icon: <ThumbsUp   className="h-3.5 w-3.5 inline" />, label: "Positive", value: 46, color: posC1 },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Mixed",    value: 21, color: posC2 },
+            { icon: <ThumbsDown className="h-3.5 w-3.5 inline" />, label: "Negative", value: 33, color: posC3 },
           ]}
           sparklineData={sentimentSparkline}
-          sparklineColor={P.ds6}
+          sparklineColor={CHART_COLORS_12[4]}
           trendLabel="Last 12 weeks"
           trendValue="+6%"
           footer={
-            <button className="w-full rounded-scrunch-sm py-2 text-[13px] font-medium text-ink/70 hover:bg-s-neutral-100 transition-colors">
+            <button className="w-full rounded-full border border-ink/20 bg-transparent py-2 text-[13px] font-medium text-ink/60 hover:bg-s-neutral-900 hover:text-paper hover:border-transparent transition-colors">
               Explore trends →
             </button>
           }
@@ -654,14 +637,14 @@ export default function ProductDashboard() {
           centerIcon={<RefreshCw className="h-3 w-3 inline" />}
           data={citationsData}
           rows={[
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Third Party", value: 38, color: P.blue600 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Competitors", value: 24, color: P.green400 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Your Brand",  value: 18, color: P.ds6 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Social",      value: 13, color: P.ds3 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Retailer",    value: 7,  color: P.neutral400 },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Third Party", value: 38, color: getChartColors(5)[0] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Competitors", value: 24, color: getChartColors(5)[1] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Your Brand",  value: 18, color: getChartColors(5)[2] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Social",      value: 13, color: getChartColors(5)[3] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Retailer",    value: 7,  color: getChartColors(5)[4] },
           ]}
           sparklineData={citationsSparkline}
-          sparklineColor={P.ds3}
+          sparklineColor={CHART_COLORS_12[2]}
           trendLabel="Last 12 weeks"
           trendValue="-34%"
         />
@@ -670,8 +653,6 @@ export default function ProductDashboard() {
       {/* ── Competitor Mention Rate ───────────────── */}
       <MentionRateSection />
 
-      {/* ── Data Palette Rules ───────────────────── */}
-      <PaletteDemoSection />
 
     </div>
   )
@@ -680,21 +661,21 @@ export default function ProductDashboard() {
 // ─── Competitor mention rate data ─────────────────────────────────────────────
 
 const mentionRateData = [
-  // ── Full Data Palette: Blues 800/500/300 → Greens 800/600/400 → Neutrals 800/500/300 → Ambers 800/500/300 ──
-  { name: "Scrunch",                  pct: 28,   color: P.blue800,    dark: false }, // deep navy
-  { name: "Semrush",                  pct: 22.6, color: P.blue500,    dark: false }, // bright blue
-  { name: "Profound AI",              pct: 17.1, color: P.blue300,    dark: false }, // cloud blue
-  { name: "Ahrefs",                   pct: 16.8, color: P.green800,   dark: false }, // dark olive
-  { name: "Peec AI",                  pct: 10.4, color: P.green600,   dark: false }, // mid green
-  { name: "Writesonic",               pct: 4.9,  color: P.green400,   dark: false }, // bright lime
-  { name: "Brandwatch",               pct: 3.6,  color: P.neutral800, dark: false }, // clay
-  { name: "Athena HQ",                pct: 2.2,  color: P.neutral500, dark: false }, // warm stone
-  { name: "Goodie",                   pct: 1.4,  color: P.neutral300, dark: false }, // neutral 300 (glaze)
-  { name: "HubSpot AI Search Grader", pct: 0.8,  color: P.warning800, dark: false }, // amber 800
-  { name: "Yext",                     pct: 0.5,  color: P.warning500, dark: false }, // amber 500
-  { name: "Bluefish AI",              pct: 0.2,  color: P.warning300, dark: false }, // amber 300
-  { name: "Citate.ai",                pct: 0,    color: P.warning800, dark: false }, // amber 800 (cycle)
-  { name: "Revere AI",                pct: 0,    color: P.warning500, dark: false }, // amber 500 (cycle)
+  // ── Full Data Palette: slots 1–12 from chart-palette.ts ──
+  { name: "Scrunch",                  pct: 28,   color: CHART_COLORS_12[0],  dark: false }, //  1 Blue 800
+  { name: "Semrush",                  pct: 22.6, color: CHART_COLORS_12[1],  dark: false }, //  2 Blue 500
+  { name: "Profound AI",              pct: 17.1, color: CHART_COLORS_12[2],  dark: true  }, //  3 Blue 300
+  { name: "Ahrefs",                   pct: 16.8, color: CHART_COLORS_12[3],  dark: false }, //  4 Green 800
+  { name: "Peec AI",                  pct: 10.4, color: CHART_COLORS_12[4],  dark: false }, //  5 Green 600
+  { name: "Writesonic",               pct: 4.9,  color: CHART_COLORS_12[5],  dark: true  }, //  6 Green 400
+  { name: "Brandwatch",               pct: 3.6,  color: CHART_COLORS_12[6],  dark: false }, //  7 Neutral 800
+  { name: "Athena HQ",                pct: 2.2,  color: CHART_COLORS_12[7],  dark: false }, //  8 Neutral 500
+  { name: "Goodie",                   pct: 1.4,  color: CHART_COLORS_12[8],  dark: true  }, //  9 Neutral 300
+  { name: "HubSpot AI Search Grader", pct: 0.8,  color: CHART_COLORS_12[9],  dark: false }, // 10 Amber 800
+  { name: "Yext",                     pct: 0.5,  color: CHART_COLORS_12[10], dark: true  }, // 11 Amber 500
+  { name: "Bluefish AI",              pct: 0.2,  color: CHART_COLORS_12[11], dark: true  }, // 12 Amber 300
+  { name: "Citate.ai",                pct: 0,    color: CHART_COLORS_12[9],  dark: false }, // cycle → Amber 800
+  { name: "Revere AI",                pct: 0,    color: CHART_COLORS_12[10], dark: true  }, // cycle → Amber 500
 ]
 
 // Time-series data for line / area chart types (top 5 competitors, weekly Dec data)
@@ -712,11 +693,11 @@ function MentionRateSection() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const trendLines = [
-    { key: "scrunch",    label: "Scrunch",     color: P.blue800  },
-    { key: "semrush",    label: "Semrush",     color: P.blue500  },
-    { key: "profoundAI", label: "Profound AI", color: P.blue300  },
-    { key: "ahrefs",     label: "Ahrefs",      color: P.green800 },
-    { key: "peecAI",     label: "Peec AI",     color: P.green600 },
+    { key: "scrunch",    label: "Scrunch",     color: CHART_COLORS_12[0] }, // Blue 800
+    { key: "semrush",    label: "Semrush",     color: CHART_COLORS_12[1] }, // Blue 500
+    { key: "profoundAI", label: "Profound AI", color: CHART_COLORS_12[2] }, // Blue 300
+    { key: "ahrefs",     label: "Ahrefs",      color: CHART_COLORS_12[3] }, // Green 800
+    { key: "peecAI",     label: "Peec AI",     color: CHART_COLORS_12[4] }, // Green 600
   ]
 
   const chartOptions = [
@@ -760,12 +741,11 @@ function MentionRateSection() {
     if (chartType === "donut") {
       return (
         <div className="shrink-0 relative" style={{
-          backgroundImage: `radial-gradient(circle, rgba(29,17,7,0.18) 1px, transparent 1px)`,
-          backgroundSize: "28px 28px",
+          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 27px, var(--chart-grid) 27px, var(--chart-grid) 28px), repeating-linear-gradient(90deg, transparent, transparent 27px, var(--chart-grid) 27px, var(--chart-grid) 28px)`,
         }}>
           <PieChart width={520} height={520}>
             <Pie data={mentionRateData} cx={260} cy={260} innerRadius={134} outerRadius={250}
-              dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={2} stroke="#F8F6F2"
+              dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={0}
               labelLine={false} label={renderDonutLabel}>
               {mentionRateData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
             </Pie>
@@ -789,12 +769,12 @@ function MentionRateSection() {
             layout="vertical"
             margin={{ top: 0, right: 40, bottom: 0, left: 120 }}
           >
-            <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} />
+            <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
             <XAxis type="number" domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
               tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
             <YAxis type="category" dataKey="name" width={110}
               tick={{ fontSize: 12, fill: "#1D1107" }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
               formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
             <Bar dataKey="pct" radius={[0, 4, 4, 0]}>
               {mentionRateData.slice(0, 10).map((entry, i) => (
@@ -812,11 +792,11 @@ function MentionRateSection() {
           <TrendLegend />
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
-              <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} />
+              <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
               <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
               <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
                 tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
+              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
                 formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
               {trendLines.map((l) => (
                 <Line key={l.key} type="monotone" dataKey={l.key}
@@ -834,11 +814,11 @@ function MentionRateSection() {
         <TrendLegend />
         <ResponsiveContainer width="100%" height={260}>
           <AreaChart data={mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
-            <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} />
+            <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
             <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
               tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid rgba(29,17,7,0.07)", background: "rgba(255,255,255,0.68)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "0 2px 8px rgba(29,17,7,0.05)" }}
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
               formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
             {trendLines.map((l) => (
               <Area key={l.key} type="monotone" dataKey={l.key}
@@ -931,22 +911,42 @@ function MentionRateSection() {
       </div>
 
       {/* White card */}
-      <div className="rounded-scrunch-xl bg-white px-7 py-6 shadow-scrunch-sm">
+      <div className="rounded-scrunch-xl bg-white shadow-scrunch-sm overflow-hidden">
         {/* Header */}
-        <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-5">
+        <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 px-7 pt-6 pb-5">
           Mention Rate For Scrunch Broken Down By Competitor
           <Info className="h-3.5 w-3.5 text-ink/30" />
         </div>
 
         {/* Chart + right column */}
         {chartType === "donut" ? (
-          <div className="grid grid-cols-2 gap-6">
-            {/* Left half: donut centered */}
-            <div className="flex items-center justify-center">
-              {renderChart()}
+          <div className="grid grid-cols-2">
+            {/* Left half: donut fills full area */}
+            <div
+              className="relative flex items-center justify-center"
+              style={{
+                backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 47px, var(--chart-grid) 47px, var(--chart-grid) 48px), repeating-linear-gradient(90deg, transparent, transparent 47px, var(--chart-grid) 47px, var(--chart-grid) 48px)`,
+              }}
+            >
+              <div className="relative py-7" style={{ zIndex: 1 }}>
+                <PieChart width={500} height={500}>
+                  <Pie data={mentionRateData} cx={250} cy={250} innerRadius={130} outerRadius={234}
+                    dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={0}
+                    labelLine={false} label={renderDonutLabel}>
+                    {mentionRateData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                  </Pie>
+                </PieChart>
+              </div>
+              {/* Grain overlay */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                backgroundImage: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23f)'/></svg>")`,
+                backgroundRepeat: "repeat",
+                opacity: 0.13,
+                mixBlendMode: "multiply",
+              }} />
             </div>
             {/* Right half: competitor table */}
-            <div className="min-w-0">
+            <div className="min-w-0 px-7 pb-6">
               <div className="grid grid-cols-[1fr_auto] border-b border-ink/[8%] pb-2 text-[12px] font-medium text-ink/40 uppercase tracking-[0.05em]">
                 <span>Competitor</span>
                 <span>Average</span>
@@ -969,7 +969,7 @@ function MentionRateSection() {
             </div>
           </div>
         ) : (
-          <>
+          <div className="px-7 pb-6">
             {renderChart()}
             <div className="mt-6">
               <div className="grid grid-cols-[1fr_2fr_120px] border-b border-ink/[8%] pb-2 text-[12px] font-medium text-ink/40 uppercase tracking-[0.05em]">
@@ -996,7 +996,7 @@ function MentionRateSection() {
                 </div>
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     </>
@@ -1004,107 +1004,3 @@ function MentionRateSection() {
 }
 
 // Fixed demo values (4 months × 12 series)
-const PALETTE_DEMO_DATA = [
-  { m: "Jan", v: [72, 55, 38, 61, 44, 83, 37, 58, 69, 47, 63, 51] },
-  { m: "Feb", v: [81, 43, 67, 55, 68, 52, 61, 44, 74, 39, 57, 66] },
-  { m: "Mar", v: [58, 71, 45, 34, 39, 64, 73, 51, 42, 68, 55, 38] },
-  { m: "Apr", v: [65, 62, 53, 72, 57, 41, 48, 67, 53, 76, 44, 59] },
-]
-
-function makePaletteBarData(n: number): Record<string, string | number>[] {
-  return PALETTE_DEMO_DATA.map(row => {
-    const obj: Record<string, string | number> = { m: row.m }
-    for (let i = 0; i < n; i++) obj[`s${i}`] = row.v[i]
-    return obj
-  })
-}
-
-function PaletteDemoSection() {
-  const variants: { n: number; label: string }[] = [
-    { n: 1,  label: "1 series"  },
-    { n: 2,  label: "2 series"  },
-    { n: 3,  label: "3 series"  },
-    { n: 4,  label: "4 series"  },
-    { n: 5,  label: "5 series"  },
-    { n: 6,  label: "6 series"  },
-    { n: 8,  label: "7+ series" },
-    { n: 12, label: "12 series" },
-  ]
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="mb-1.5 text-[15px] font-semibold text-ink">Data Palette Rules</h2>
-        <p className="text-[13px] text-ink/50 leading-relaxed">
-          1–6 series: hand-picked for contrast — Blue 500 → Green 400 → Neutral 300 → Blue 300 → Green 600 → Neutral 500. At 7+ series: full family cascade, dark to light — all Blues, then Greens, then Neutrals, then Ambers.
-        </p>
-      </div>
-
-      {/* Bar charts */}
-      <div>
-        <p className="mb-3 text-[12px] font-medium text-ink/40 uppercase tracking-[0.06em]">Bar</p>
-        <div className="grid grid-cols-4 gap-4">
-          {variants.map(({ n, label }) => {
-            const colors = getChartColors(n)
-            const data = makePaletteBarData(n)
-            const keys = Array.from({ length: n }, (_, i) => `s${i}`)
-            return (
-              <div key={n} className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[13px] font-medium text-ink/70">{label}</span>
-                  <div className="flex items-center gap-1 flex-wrap justify-end" style={{ maxWidth: 100 }}>
-                    {colors.map((c, i) => (
-                      <span key={i} className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: c }} />
-                    ))}
-                  </div>
-                </div>
-                <ResponsiveContainer width="100%" height={100}>
-                  <BarChart data={data} margin={{ top: 2, right: 0, bottom: 0, left: -30 }} barGap={1} barCategoryGap="30%">
-                    <CartesianGrid strokeDasharray="4 4" stroke={P.neutral300} strokeOpacity={0.7} vertical={false} />
-                    <XAxis dataKey="m" tick={{ fontSize: 10, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-                    <YAxis tick={{ fontSize: 10, fill: P.neutral500 }} tickLine={false} axisLine={false} />
-                    {keys.map((k, i) => (
-                      <Bar key={k} dataKey={k} fill={colors[i]} radius={[2, 2, 0, 0]} isAnimationActive={false} />
-                    ))}
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Donut charts */}
-      <div>
-        <p className="mb-3 text-[12px] font-medium text-ink/40 uppercase tracking-[0.06em]">Donut</p>
-        <div className="grid grid-cols-4 gap-4">
-          {variants.map(({ n, label }) => {
-            const colors = getChartColors(n)
-            const slices = Array.from({ length: n }, (_, i) => ({ v: 1, color: colors[i] }))
-            return (
-              <div key={n} className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[13px] font-medium text-ink/70">{label}</span>
-                  <div className="flex items-center gap-1 flex-wrap justify-end" style={{ maxWidth: 100 }}>
-                    {colors.map((c, i) => (
-                      <span key={i} className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: c }} />
-                    ))}
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <PieChart width={120} height={120} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-                    <Pie data={slices} cx={60} cy={60} innerRadius={32} outerRadius={56}
-                      dataKey="v" startAngle={90} endAngle={-270} strokeWidth={2} stroke="white"
-                      isAnimationActive={false}>
-                      {slices.map((s, i) => <Cell key={i} fill={s.color} />)}
-                    </Pie>
-                  </PieChart>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
-}

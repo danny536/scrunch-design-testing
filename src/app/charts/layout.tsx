@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ColorPickerOverlayMount } from "@/components/color-picker-overlay-mount"
 
 const categories = [
   { label: "Area", href: "/charts/area" },
@@ -8,6 +9,7 @@ const categories = [
   { label: "Radar", href: "/charts/radar" },
   { label: "Radial", href: "/charts/radial" },
   { label: "Tooltips", href: "/charts/tooltips" },
+  { label: "Palette", href: "/charts/palette" },
 ]
 
 export default function ChartsLayout({ children }: { children: React.ReactNode }) {
@@ -39,6 +41,7 @@ export default function ChartsLayout({ children }: { children: React.ReactNode }
       <main className="max-w-7xl mx-auto px-6 py-10">
         {children}
       </main>
+      <ColorPickerOverlayMount />
     </div>
   )
 }

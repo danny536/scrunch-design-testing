@@ -48,6 +48,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${newsreader.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
           <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>

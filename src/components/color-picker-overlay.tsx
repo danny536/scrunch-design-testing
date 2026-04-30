@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react"
 import { X } from "lucide-react"
+import { CHART_PALETTE_FAMILIES, type ChartPaletteEntry, type ChartPaletteFamily } from "@/lib/chart-palette"
 
 /* ─────────────────────────────────────────────────────────
    Palette data
@@ -47,14 +48,14 @@ const PALETTE: PaletteGroup[] = [
     swatches: [
       { stop: 50,  hex: "#FBFFE7" },
       { stop: 100, hex: "#F2FFC5" },
-      { stop: 200, hex: "#E9FE91" },
-      { stop: 300, hex: "#D8FC3B", alias: "AI" },
-      { stop: 400, hex: "#CCF60E" },
-      { stop: 500, hex: "#BEE208" },
-      { stop: 600, hex: "#A3BC03" },
+      { stop: 200, hex: "#D8FC3B", alias: "AI" },
+      { stop: 300, hex: "#C3E536" },
+      { stop: 400, hex: "#AECE31" },
+      { stop: 500, hex: "#99B72C" },
+      { stop: 600, hex: "#84A027" },
       { stop: 700, hex: "#6E8920", alias: "BOTANIC" },
-      { stop: 800, hex: "#656B0A" },
-      { stop: 900, hex: "#484B0C" },
+      { stop: 800, hex: "#586B16" },
+      { stop: 900, hex: "#434E0D" },
       { stop: 950, hex: "#2D3003" },
     ],
   },
@@ -65,7 +66,7 @@ const PALETTE: PaletteGroup[] = [
     swatches: [
       { stop: 50,  hex: "#FEFDE8" },
       { stop: 100, hex: "#FFFCC2" },
-      { stop: 200, hex: "#FFF587" },
+      { stop: 200, hex: "#FFFC0C" },
       { stop: 300, hex: "#FFE843" },
       { stop: 400, hex: "#FFDA1F" },
       { stop: 500, hex: "#EFBE03" },
@@ -123,7 +124,7 @@ const PALETTE_EXTENDED: PaletteGroup[] = [
       // Yellow (warning scale — stops match exactly)
       { stop: 50,  hex: "#FEFDE8", prefixOverride: "s-warning" },
       { stop: 100, hex: "#FFFCC2", prefixOverride: "s-warning" },
-      { stop: 200, hex: "#FFF587", prefixOverride: "s-warning" },
+      { stop: 200, hex: "#FFFC0C", prefixOverride: "s-warning" },
       { stop: 300, hex: "#FFE843", prefixOverride: "s-warning", alias: "YELLOW" },
       // Orange scale
       { stop: 400, hex: "#FF9410", alias: "ORANGE" },
@@ -198,12 +199,7 @@ function SwatchCell({
         </span>
       </button>
 
-      {/* Named alias */}
-      {swatch.alias && (
-        <span className="font-plex-mono text-[8px] leading-none text-ink/50 tracking-wide text-center mt-0.5" style={{ maxWidth: 56 }}>
-          {swatch.alias}
-        </span>
-      )}
+      {/* Named alias intentionally hidden */}
     </div>
   )
 }
@@ -262,46 +258,13 @@ function Toast({ message }: { message: string }) {
 ───────────────────────────────────────────────────────── */
 
 /* ─────────────────────────────────────────────────────────
-   Full Data Palette — 12 canonical data colors (4 families × 3 stops)
+   Full Data Palette — sourced from @/lib/chart-palette
+   Edit chart-palette.ts to update colors everywhere at once.
 ───────────────────────────────────────────────────────── */
 
-type DataSwatch = { hex: string; stop: number; prefix: string; dark: boolean }
-type DataFamily = { name: string; swatches: DataSwatch[] }
-
-const DATA_PALETTE: DataFamily[] = [
-  {
-    name: "Blue",
-    swatches: [
-      { hex: "#1F2CAE", stop: 800, prefix: "s-blue",    dark: false },
-      { hex: "#3C67F5", stop: 500, prefix: "s-blue",    dark: false },
-      { hex: "#93C0FE", stop: 300, prefix: "s-blue",    dark: true  },
-    ],
-  },
-  {
-    name: "Green",
-    swatches: [
-      { hex: "#656B0A", stop: 800, prefix: "s-green",   dark: false },
-      { hex: "#A3BC03", stop: 600, prefix: "s-green",   dark: false },
-      { hex: "#CCF60E", stop: 400, prefix: "s-green",   dark: true  },
-    ],
-  },
-  {
-    name: "Neutral",
-    swatches: [
-      { hex: "#40362E", stop: 800, prefix: "s-neutral", dark: false },
-      { hex: "#93886F", stop: 500, prefix: "s-neutral", dark: false },
-      { hex: "#F1E8C7", stop: 300, prefix: "s-neutral", dark: true  },
-    ],
-  },
-  {
-    name: "Amber",
-    swatches: [
-      { hex: "#88520B", stop: 800, prefix: "s-warning", dark: false },
-      { hex: "#EFBE03", stop: 500, prefix: "s-warning", dark: true  },
-      { hex: "#FFE843", stop: 300, prefix: "s-warning", dark: true  },
-    ],
-  },
-]
+// Re-export types under local aliases so the rest of this file is unchanged
+type DataSwatch = ChartPaletteEntry
+type DataFamily = ChartPaletteFamily
 
 function DataPaletteGrid({ onCopy }: { onCopy: (cls: string) => void }) {
   return (
@@ -312,7 +275,7 @@ function DataPaletteGrid({ onCopy }: { onCopy: (cls: string) => void }) {
       </p>
       {/* 4-column grid: one column per family */}
       <div className="grid grid-cols-4 gap-3">
-        {DATA_PALETTE.map((family) => (
+        {CHART_PALETTE_FAMILIES.map((family) => (
           <div key={family.name} className="flex flex-col gap-2">
             <p className="text-[11px] font-medium text-ink/60 text-center">{family.name}</p>
             {family.swatches.map((sw) => {
@@ -369,7 +332,7 @@ export function ColorPickerOverlay() {
   }, [])
 
   // Representative dot color: Green 400
-  const dotColor = "#CCF60E"
+  const dotColor = "#AECE31"
 
   return (
     <>
@@ -390,7 +353,7 @@ export function ColorPickerOverlay() {
         aria-label="Toggle color palette"
       >
         <span
-          className="inline-block rounded-full border border-black/10 flex-shrink-0"
+          className="inline-block rounded-full flex-shrink-0"
           style={{ width: 10, height: 10, backgroundColor: dotColor }}
           aria-hidden
         />
