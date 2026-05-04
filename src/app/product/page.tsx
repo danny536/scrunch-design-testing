@@ -2,8 +2,6 @@
 
 import { useState } from "react"
 import {
-  BookOpen,
-  Play,
   Users,
   LayoutGrid,
   X,
@@ -368,11 +366,11 @@ export default function ProductDashboard() {
           </p>
           <div className="mt-4 flex items-center gap-4">
             <button className="flex items-center gap-1.5 text-[13px] text-ink/70 hover:text-ink transition-colors">
-              <BookOpen className="h-4 w-4" />
+              <Icon name="auto_stories" size={16} />
               Getting Started
             </button>
             <button className="flex items-center gap-1.5 text-[13px] text-ink/70 hover:text-ink transition-colors">
-              <Play className="h-4 w-4" />
+              <Icon name="play_circle" size={16} />
               Watch an Intro
             </button>
           </div>
