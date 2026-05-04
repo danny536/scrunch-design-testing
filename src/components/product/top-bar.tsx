@@ -53,7 +53,7 @@ export function ProductTopBar() {
         <div className="relative" ref={learnRef}>
           <button
             onClick={() => setShowLearn((v) => !v)}
-            className="flex items-center gap-1.5 rounded-scrunch-md border border-s-neutral-200 bg-white px-2.5 py-1.5 text-sm text-ink/70 hover:bg-s-neutral-50 hover:text-ink transition-colors"
+            className="flex items-center gap-1.5 rounded-scrunch-md border border-s-neutral-200 bg-white px-2.5 py-1.5 text-sm text-ink/70 hover:bg-s-neutral-50 hover:text-ink dark:bg-white dark:border-white/20 dark:text-ink dark:hover:bg-white/90 transition-colors"
           >
             <Icon name="auto_stories" size={16} />
             <span className="font-medium">Learn</span>
@@ -80,10 +80,10 @@ export function ProductTopBar() {
           )}
         </div>
 
-        <div className="flex items-center gap-2 rounded-scrunch-md border border-ink/[12%] bg-white px-3 py-1.5 text-sm text-ink/40 w-52">
+        <div className="flex items-center gap-2 rounded-scrunch-md border border-ink/[12%] bg-white px-3 py-1.5 text-sm text-ink/40 w-52 dark:bg-white dark:border-white/20 dark:text-ink/50">
           <Search className="h-4 w-4 shrink-0" />
           <span className="flex-1">Search...</span>
-          <kbd className="inline-flex items-center gap-0.5 rounded border border-ink/10 px-1 py-px font-plex-mono text-[11px] text-ink/30">
+          <kbd className="inline-flex items-center gap-0.5 rounded border border-ink/10 dark:border-ink/20 px-1 py-px font-plex-mono text-[11px] text-ink/30 dark:text-ink/40">
             ⌘K
           </kbd>
         </div>

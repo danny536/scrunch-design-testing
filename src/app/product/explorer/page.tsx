@@ -436,17 +436,19 @@ export default function ExplorerPage() {
         <div className="flex items-center gap-1.5">
 
           {/* Custom date button */}
-          <button className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 transition-colors">
+          <button className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 dark:bg-white dark:border-white/20 dark:text-ink dark:hover:bg-white/90 transition-colors">
             <Icon name="calendar_month" size={15} className="shrink-0" />
             Custom
           </button>
 
           {/* Date range toggle */}
-          <div className="flex items-center rounded-scrunch-sm bg-s-neutral-100 p-0.5 gap-0.5">
+          <div className="flex items-center rounded-scrunch-sm bg-s-neutral-100 dark:bg-white/10 p-0.5 gap-0.5">
             {(["7D", "30D", "3M"] as const).map((r) => (
               <button key={r} onClick={() => setRange(r)}
                 className={`px-2.5 py-1 text-[12.5px] rounded-scrunch-xs transition-colors ${
-                  range === r ? "bg-white text-ink font-medium shadow-scrunch-sm" : "text-ink/50 hover:text-ink/70"
+                  range === r
+                    ? "bg-white text-ink font-medium shadow-scrunch-sm dark:bg-white dark:text-ink"
+                    : "text-ink/50 hover:text-ink/70 dark:text-white/50 dark:hover:text-white/80"
                 }`}>{r}
               </button>
             ))}
@@ -458,21 +460,21 @@ export default function ExplorerPage() {
               onClick={() => setShowCompare((v) => !v)}
               className={`flex items-center gap-1.5 rounded-scrunch-sm border px-3 py-1.5 text-[13px] transition-colors ${
                 compare !== "No compare"
-                  ? "border-s-blue-300 bg-s-blue-50 text-s-blue-700 hover:bg-s-blue-100"
-                  : "border-s-neutral-200 bg-white text-ink/60 hover:bg-s-neutral-50"
+                  ? "border-s-blue-300 bg-s-blue-50 text-s-blue-700 hover:bg-s-blue-100 dark:border-s-blue-300 dark:bg-s-blue-50 dark:text-s-blue-700"
+                  : "border-s-neutral-200 bg-white text-ink/60 hover:bg-s-neutral-50 dark:bg-white dark:border-white/20 dark:text-ink dark:hover:bg-white/90"
               }`}
             >
               {compare === "No compare" ? "Compare" : compare}
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
             {showCompare && (
-              <div className="absolute top-[calc(100%+4px)] left-0 min-w-[180px] bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+              <div className="absolute top-[calc(100%+4px)] left-0 min-w-[180px] bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                 {(["No compare", "Previous day", "Previous week", "Previous month", "Previous quarter", "Previous period", "Previous year"] as const).map((opt) => (
                   <button
                     key={opt}
                     onClick={() => { setCompare(opt); setShowCompare(false) }}
                     className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
-                      opt === compare ? "bg-s-neutral-100 text-ink font-medium" : "text-ink hover:bg-s-neutral-50"
+                      opt === compare ? "bg-s-neutral-100 dark:bg-white/10 text-ink font-medium" : "text-ink dark:text-paper hover:bg-s-neutral-50 dark:hover:bg-white/5"
                     }`}
                   >
                     {opt}
@@ -483,25 +485,25 @@ export default function ExplorerPage() {
           </div>
 
           {/* Visual separator */}
-          <div className="mx-1 h-4 w-px bg-s-neutral-200" />
+          <div className="mx-1 h-4 w-px bg-s-neutral-200 dark:bg-white/15" />
 
           {/* Granularity dropdown */}
           <div className="relative" ref={granularityDropRef}>
             <button
               onClick={() => setShowGranularity((v) => !v)}
-              className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 transition-colors"
+              className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 dark:bg-white dark:border-white/20 dark:text-ink dark:hover:bg-white/90 transition-colors"
             >
               {granularity}
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
             {showGranularity && (
-              <div className="absolute top-[calc(100%+4px)] left-0 min-w-[130px] bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+              <div className="absolute top-[calc(100%+4px)] left-0 min-w-[130px] bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                 {(["Day", "Week", "Month", "Quarter"] as const).map((g) => (
                   <button
                     key={g}
                     onClick={() => { setGranularity(g); setShowGranularity(false) }}
                     className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
-                      g === granularity ? "bg-s-neutral-100 text-ink font-medium" : "text-ink hover:bg-s-neutral-50"
+                      g === granularity ? "bg-s-neutral-100 dark:bg-white/10 text-ink font-medium" : "text-ink dark:text-paper hover:bg-s-neutral-50 dark:hover:bg-white/5"
                     }`}
                   >
                     {g}
@@ -515,14 +517,14 @@ export default function ExplorerPage() {
           <div className="relative" ref={chartTypeDropRef}>
             <button
               onClick={() => setShowChartTypeDrop((v) => !v)}
-              className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 transition-colors"
+              className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 dark:bg-white dark:border-white/20 dark:text-ink dark:hover:bg-white/90 transition-colors"
             >
               <Icon name="show_chart" size={15} className="shrink-0 opacity-70" />
               {CHART_OPTIONS.find((o) => o.type === chartType)?.label ?? "Line"}
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
               {showChartTypeDrop && (
-                <div className="absolute top-[calc(100%+4px)] right-0 min-w-[160px] bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+                <div className="absolute top-[calc(100%+4px)] right-0 min-w-[160px] bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                   {CHART_OPTIONS.map((opt) => (
                     <button
                       key={opt.type}
@@ -530,10 +532,10 @@ export default function ExplorerPage() {
                       onClick={() => { if (opt.available) { setChartType(opt.type); setShowChartTypeDrop(false) } }}
                       className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
                         opt.type === chartType
-                          ? "bg-s-neutral-100 text-ink font-medium"
+                          ? "bg-s-neutral-100 dark:bg-white/10 text-ink font-medium"
                           : opt.available
-                          ? "text-ink hover:bg-s-neutral-50"
-                          : "text-ink/25 cursor-not-allowed"
+                          ? "text-ink dark:text-paper hover:bg-s-neutral-50 dark:hover:bg-white/5"
+                          : "text-ink/25 dark:text-white/20 cursor-not-allowed"
                       }`}
                     >
                       {opt.label}
@@ -791,14 +793,14 @@ export default function ExplorerPage() {
 
         {/* ── Right query panel ─────────────────────────── */}
         <div className="w-[264px] shrink-0 self-start sticky top-6">
-          <div className="rounded-scrunch-lg bg-white shadow-scrunch-sm overflow-visible">
+          <div className="rounded-scrunch-lg bg-white dark:bg-[#1e1b17] shadow-scrunch-sm overflow-visible">
 
-            <div className="px-5 py-3.5 border-b border-s-neutral-100">
+            <div className="px-5 py-3.5 border-b border-s-neutral-100 dark:border-white/8">
               <span className="text-[13.5px] font-semibold text-ink">Query</span>
             </div>
 
             {/* Metrics */}
-            <div className="px-5 py-4 border-b border-s-neutral-100">
+            <div className="px-5 py-4 border-b border-s-neutral-100 dark:border-white/8">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[13.5px] font-semibold text-ink">Metrics</span>
                 <button onClick={() => setShowMetricDropdown((v) => !v)} className="text-ink/40 hover:text-ink/70 transition-colors">
@@ -807,9 +809,9 @@ export default function ExplorerPage() {
               </div>
               <div className="space-y-2">
                 {activeMetrics.map((key, i) => (
-                  <div key={key} className="border border-s-neutral-200 rounded-scrunch-sm">
+                  <div key={key} className="border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm">
                     <div className="flex items-center gap-2.5 px-3 py-2.5">
-                      <span className="h-5 w-5 rounded-[4px] bg-s-neutral-100 flex items-center justify-center text-[10px] font-medium text-ink/50 font-plex-mono shrink-0">
+                      <span className="h-5 w-5 rounded-[4px] bg-s-neutral-100 dark:bg-white/10 flex items-center justify-center text-[10px] font-medium text-ink/50 font-plex-mono shrink-0">
                         {LETTERS[i]}
                       </span>
                       <span className="flex-1 text-[13px] text-ink">{METRIC_META[key].label}</span>
@@ -817,7 +819,7 @@ export default function ExplorerPage() {
                         <X className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                    <div className="border-t border-s-neutral-100 px-3 py-2 flex items-center gap-2">
+                    <div className="border-t border-s-neutral-100 dark:border-white/8 px-3 py-2 flex items-center gap-2">
                       <span className="font-plex-mono text-[10px] text-ink/35 tracking-wide">FOR</span>
                       <span className="text-[13px] text-ink/70">
                         {COMPETITOR_METRICS.has(key) ? "Colgate vs. competitors" : "Colgate"}
@@ -829,23 +831,23 @@ export default function ExplorerPage() {
                 <div className="relative" ref={metricDropdownRef}>
                   <button
                     onClick={() => setShowMetricDropdown((v) => !v)}
-                    className="w-full border border-s-neutral-200 border-dashed rounded-scrunch-sm flex items-center gap-2.5 px-3 py-2.5 hover:bg-s-neutral-50 transition-colors"
+                    className="w-full border border-s-neutral-200 dark:border-white/10 border-dashed rounded-scrunch-sm flex items-center gap-2.5 px-3 py-2.5 hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                   >
-                    <span className="h-5 w-5 rounded-[4px] bg-s-neutral-100 flex items-center justify-center text-[10px] font-medium text-ink/40 font-plex-mono shrink-0">
+                    <span className="h-5 w-5 rounded-[4px] bg-s-neutral-100 dark:bg-white/10 flex items-center justify-center text-[10px] font-medium text-ink/40 font-plex-mono shrink-0">
                       {nextLetter}
                     </span>
                     <span className="text-[13px] text-ink/45">Add Metric</span>
                   </button>
                   {showMetricDropdown && (
-                    <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+                    <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                       {METRIC_OPTIONS.map((opt) => {
                         const isActive = activeMetrics.includes(opt.key as MetricKey)
                         const disabled = !opt.available || isActive
                         return (
                           <button key={opt.key} disabled={disabled} onClick={() => addMetric(opt.key as MetricKey)}
                             className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors ${
-                              isActive ? "bg-s-neutral-50 text-ink/40 cursor-default"
-                              : opt.available ? "text-ink hover:bg-s-neutral-50"
+                              isActive ? "bg-s-neutral-50 dark:bg-white/5 text-ink/40 cursor-default"
+                              : opt.available ? "text-ink hover:bg-s-neutral-50 dark:hover:bg-white/5"
                               : "text-ink/30 cursor-not-allowed"
                             }`}>
                             {opt.label}
@@ -859,7 +861,7 @@ export default function ExplorerPage() {
             </div>
 
             {/* Filter */}
-            <div className="px-5 py-4 border-b border-s-neutral-100">
+            <div className="px-5 py-4 border-b border-s-neutral-100 dark:border-white/8">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[13.5px] font-semibold text-ink">Filter</span>
                 {pendingStep === null && (
@@ -872,9 +874,9 @@ export default function ExplorerPage() {
               <div className="space-y-2">
                 {/* Active filter chips */}
                 {filters.map((f, i) => (
-                  <div key={i} className="border border-s-neutral-200 rounded-scrunch-sm px-3 py-2.5 flex items-center gap-2 text-[13px]">
+                  <div key={i} className="border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm px-3 py-2.5 flex items-center gap-2 text-[13px]">
                     <span className="text-ink/70 shrink-0">{f.property}</span>
-                    <span className="px-1.5 py-0.5 rounded bg-s-neutral-100 text-[10.5px] text-ink/45 font-plex-mono shrink-0">{f.op}</span>
+                    <span className="px-1.5 py-0.5 rounded bg-s-neutral-100 dark:bg-white/10 text-[10.5px] text-ink/45 font-plex-mono shrink-0">{f.op}</span>
                     <span className="flex-1 text-ink">{f.value}</span>
                     <button onClick={() => removeFilter(i)} className="text-ink/30 hover:text-ink/60 transition-colors shrink-0">
                       <X className="h-3.5 w-3.5" />
@@ -887,7 +889,7 @@ export default function ExplorerPage() {
                   <div className="relative" ref={filterPropRef}>
                     <button
                       onClick={() => setShowFilterPropDrop((v) => !v)}
-                      className="w-full border border-s-neutral-200 rounded-scrunch-sm px-3 py-2.5 flex items-center justify-between text-[13px] text-ink/45 hover:bg-s-neutral-50 transition-colors"
+                      className="w-full border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm px-3 py-2.5 flex items-center justify-between text-[13px] text-ink/45 hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                     >
                       <span>Select a filter</span>
                       <div className="flex items-center gap-1.5">
@@ -901,12 +903,12 @@ export default function ExplorerPage() {
                       </div>
                     </button>
                     {showFilterPropDrop && (
-                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                         {FILTER_DEFS.map((def) => (
                           <button
                             key={def.key}
                             onClick={() => selectFilterProp(def.key)}
-                            className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 transition-colors"
+                            className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                           >
                             {def.label}
                           </button>
@@ -921,10 +923,10 @@ export default function ExplorerPage() {
                   <div className="relative" ref={filterValRef}>
                     <button
                       onClick={() => setShowFilterValDrop((v) => !v)}
-                      className="w-full border border-s-neutral-200 rounded-scrunch-sm px-3 py-2.5 flex items-center gap-2 text-[13px] hover:bg-s-neutral-50 transition-colors"
+                      className="w-full border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm px-3 py-2.5 flex items-center gap-2 text-[13px] hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                     >
                       <span className="text-ink/70 shrink-0">{pendingDef.label}</span>
-                      <span className="px-1.5 py-0.5 rounded bg-s-neutral-100 text-[10.5px] text-ink/45 font-plex-mono shrink-0">{pendingDef.op}</span>
+                      <span className="px-1.5 py-0.5 rounded bg-s-neutral-100 dark:bg-white/10 text-[10.5px] text-ink/45 font-plex-mono shrink-0">{pendingDef.op}</span>
                       <span className="flex-1 text-left text-ink/40">Select value</span>
                       <div className="flex items-center gap-1.5 shrink-0">
                         <ChevronDown className="h-3.5 w-3.5 text-ink/40" />
@@ -937,13 +939,13 @@ export default function ExplorerPage() {
                       </div>
                     </button>
                     {showFilterValDrop && (
-                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                         {pendingDef.values.length > 0 ? (
                           pendingDef.values.map((val) => (
                             <button
                               key={val.slug}
                               onClick={() => selectFilterValue(val)}
-                              className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                             >
                               {val.label}
                             </button>
@@ -962,7 +964,7 @@ export default function ExplorerPage() {
                 {pendingStep === null && filters.length > 0 && (
                   <button
                     onClick={startAddFilter}
-                    className="w-full border border-s-neutral-200 border-dashed rounded-scrunch-sm px-3 py-2 flex items-center gap-2 text-[12.5px] text-ink/40 hover:bg-s-neutral-50 hover:text-ink/60 transition-colors"
+                    className="w-full border border-s-neutral-200 dark:border-white/10 border-dashed rounded-scrunch-sm px-3 py-2 flex items-center gap-2 text-[12.5px] text-ink/40 hover:bg-s-neutral-50 dark:hover:bg-white/5 hover:text-ink/60 transition-colors"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     Add filter
@@ -982,7 +984,7 @@ export default function ExplorerPage() {
                 )}
               </div>
               {breakdown ? (
-                <div className="border border-s-neutral-200 rounded-scrunch-sm px-3 py-2.5 flex items-center text-[13px]">
+                <div className="border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm px-3 py-2.5 flex items-center text-[13px]">
                   <span className="flex-1 text-ink">{breakdown}</span>
                   <button onClick={() => setBreakdown(null)} className="text-ink/30 hover:text-ink/60 transition-colors shrink-0 ml-2">
                     <X className="h-3.5 w-3.5" />
@@ -992,7 +994,7 @@ export default function ExplorerPage() {
                 <div className="relative" ref={breakdownDropdownRef}>
                   <button
                     onClick={() => setShowBreakdownDropdown((v) => !v)}
-                    className="w-full border border-s-neutral-200 rounded-scrunch-sm px-3 py-2.5 flex items-center justify-between text-[13px] text-ink/45 hover:bg-s-neutral-50 transition-colors"
+                    className="w-full border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm px-3 py-2.5 flex items-center justify-between text-[13px] text-ink/45 hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors"
                   >
                     <span>Select a dimension</span>
                     <div className="flex items-center gap-1.5">
@@ -1001,10 +1003,10 @@ export default function ExplorerPage() {
                     </div>
                   </button>
                   {showBreakdownDropdown && (
-                    <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-s-neutral-200 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
+                    <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white dark:bg-[#2a2520] border border-s-neutral-200 dark:border-white/10 rounded-scrunch-sm shadow-scrunch-md z-50 overflow-hidden">
                       {BREAKDOWN_OPTIONS.map((dim) => (
                         <button key={dim} onClick={() => { setBreakdown(dim); setShowBreakdownDropdown(false) }}
-                          className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 transition-colors">
+                          className="w-full text-left px-4 py-2.5 text-[13px] text-ink hover:bg-s-neutral-50 dark:hover:bg-white/5 transition-colors">
                           {dim}
                         </button>
                       ))}
