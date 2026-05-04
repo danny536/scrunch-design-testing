@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "react-material-symbols/sharp";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = localFont({

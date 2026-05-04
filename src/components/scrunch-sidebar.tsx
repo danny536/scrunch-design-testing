@@ -1,63 +1,59 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import {
-  Home,
-  Link2,
-  ShoppingCart,
-  Code2,
-  TrendingUp,
-  Library,
-  UserRound,
-  Puzzle,
-  PanelLeftClose,
-  FileText,
-  Waypoints,
-  Network,
-  SquareArrowOutUpRight,
-  Sun,
-  Moon,
-} from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
+import { Icon } from "@/components/icon"
 
 // ─── Nav structure ────────────────────────────────────────────────────────────
 
-const navigation = [
+type NavItem = {
+  id: string
+  label: string
+  icon: string
+  badge?: "NEW" | "BETA"
+  href?: string
+}
+
+const navigation: { section?: string; items: NavItem[] }[] = [
   {
     items: [
-      { id: "home", label: "Home", icon: Home },
+      { id: "home", label: "Home", icon: "house", href: "/product" },
     ],
   },
   {
     section: "Brand Observability",
     items: [
-      { id: "prompts",   label: "Prompts Monitoring", icon: FileText },
-      { id: "citations", label: "Citations",          icon: Link2 },
-      { id: "insights",  label: "Insights",           icon: Waypoints },
-      { id: "shopping",  label: "Shopping",           icon: ShoppingCart, badge: "NEW" },
+      { id: "explorer",  label: "Explorer",           icon: "explore",       badge: "BETA", href: "/product/explorer" },
+      { id: "topics",    label: "Topics",             icon: "sell",          badge: "BETA", href: "/product/topics" },
+      { id: "prompts",   label: "Prompts Monitoring", icon: "chat" },
+      { id: "citations", label: "Citations",          icon: "link" },
+      { id: "insights",  label: "Insights",           icon: "flare" },
+      { id: "shopping",  label: "Shopping",           icon: "shopping_cart", badge: "NEW" },
     ],
   },
   {
     section: "Brand Content",
     items: [
-      { id: "sitemaps", label: "Site Maps", icon: Network, badge: "NEW" },
+      { id: "sitemaps", label: "Site Maps", icon: "account_tree", badge: "NEW" },
     ],
   },
   {
     section: "Audience Activity",
     items: [
-      { id: "traffic",   label: "Agent Traffic", icon: Code2 },
-      { id: "trends",    label: "Trends",        icon: TrendingUp },
-      { id: "referrals", label: "AI Referrals",  icon: SquareArrowOutUpRight },
+      { id: "traffic",   label: "Agent Traffic", icon: "compare_arrows" },
+      { id: "trends",    label: "Trends",        icon: "trending_up" },
+      { id: "referrals", label: "AI Referrals",  icon: "left_click" },
     ],
   },
   {
     section: "Brand Settings",
     items: [
-      { id: "context",      label: "AI Context",    icon: Library },
-      { id: "team",         label: "Team Members",  icon: UserRound },
-      { id: "integrations", label: "Integrations",  icon: Puzzle },
+      { id: "context",      label: "AI Context",   icon: "library_books" },
+      { id: "team",         label: "Team Members", icon: "group" },
+      { id: "integrations", label: "Integrations", icon: "api" },
     ],
   },
 ]
@@ -66,6 +62,11 @@ const navigation = [
 
 export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?: string }) {
   const [active, setActive] = useState(defaultActive)
+  const pathname = usePathname()
+
+  const hasRouteMatch = navigation.some((g) =>
+    g.items.some((i) => i.href && pathname === i.href)
+  )
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
@@ -86,24 +87,37 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
               </div>
             )}
             {group.items.map((item) => {
-              const Icon = item.icon
-              const isActive = active === item.id
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActive(item.id)}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 rounded-scrunch-md px-2 py-[9px] text-left transition-colors",
-                    isActive
-                      ? "bg-s-neutral-100 text-ink"
-                      : "text-ink hover:bg-s-neutral-100/70"
-                  )}
-                >
-                  <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
+              const isActive = item.href
+                ? pathname === item.href
+                : !hasRouteMatch && active === item.id
+
+              const itemClasses = cn(
+                "flex w-full items-center gap-2.5 rounded-scrunch-pill px-2 py-[9px] text-left transition-colors",
+                isActive
+                  ? "bg-s-neutral-200 text-ink"
+                  : "text-ink hover:bg-s-neutral-100"
+              )
+
+              const content = (
+                <>
+                  <Icon name={item.icon} size={20} className="shrink-0" />
                   <span className="font-sans text-[14px] leading-none">{item.label}</span>
-                  {"badge" in item && item.badge && (
-                    <NewBadge>{item.badge}</NewBadge>
-                  )}
+                  {item.badge === "NEW"  && <NewBadge>{item.badge}</NewBadge>}
+                  {item.badge === "BETA" && <BetaBadge>{item.badge}</BetaBadge>}
+                </>
+              )
+
+              if (item.href) {
+                return (
+                  <Link key={item.id} href={item.href} className={itemClasses}>
+                    {content}
+                  </Link>
+                )
+              }
+
+              return (
+                <button key={item.id} onClick={() => setActive(item.id)} className={itemClasses}>
+                  {content}
                 </button>
               )
             })}
@@ -113,21 +127,17 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
 
       {/* ── Bottom ───────────────────────────────── */}
       <div className="border-t border-ink/[12%] px-2.5 py-2.5">
-        <button className="flex w-full items-center gap-2.5 rounded-scrunch-md px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors">
-          <PanelLeftClose className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
+        <button className="flex w-full items-center gap-2.5 rounded-scrunch-pill px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors">
+          <Icon name="left_panel_close" size={20} className="shrink-0" />
           <span className="font-sans text-[14px] leading-none">Collapse menu</span>
         </button>
 
         {/* ── Theme toggle ─────────────────────── */}
         <button
           onClick={() => setTheme(isDark ? "light" : "dark")}
-          className="flex w-full items-center gap-2.5 rounded-scrunch-md px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors"
+          className="flex w-full items-center gap-2.5 rounded-scrunch-pill px-2 py-[7px] text-ink/60 hover:bg-s-neutral-100 hover:text-ink transition-colors"
         >
-          {isDark ? (
-            <Sun className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
-          ) : (
-            <Moon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
-          )}
+          <Icon name={isDark ? "light_mode" : "bedtime"} size={20} className="shrink-0" />
           <span className="font-sans text-[14px] leading-none">
             {isDark ? "Light mode" : "Dark mode"}
           </span>
@@ -135,7 +145,7 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
 
         <div className="mt-0.5 flex items-center gap-2.5 px-2 py-2">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-s-blue-100">
-            <UserRound className="h-4 w-4 text-s-blue-600" strokeWidth={1.6} />
+            <Icon name="person" size={16} className="text-s-blue-600" />
           </div>
           <span className="font-sans text-[13px] font-medium text-ink truncate">
             danny@excelsalabs.com
@@ -151,6 +161,16 @@ export function ScrunchSidebar({ defaultActive = "shopping" }: { defaultActive?:
 function NewBadge({ children }: { children: string }) {
   return (
     <span className="ml-auto inline-flex items-center rounded-full bg-s-green-200 px-2 py-0.5 font-sans text-[11px] font-medium text-s-green-900 leading-none outline-none">
+      {children}
+    </span>
+  )
+}
+
+// ─── BETA badge ───────────────────────────────────────────────────────────────
+
+function BetaBadge({ children }: { children: string }) {
+  return (
+    <span className="ml-auto inline-flex items-center rounded-full bg-s-warning-300 px-2 py-0.5 font-sans text-[11px] font-medium text-s-warning-800 leading-none outline-none">
       {children}
     </span>
   )

@@ -542,7 +542,7 @@ export default function ProductDashboard() {
               <span className="text-ink/35 font-normal">(avg %)</span>
               <Info className="h-3.5 w-3.5 text-ink/30" />
             </div>
-            <div className="space-y-0">
+            <div className="space-y-0 min-h-[260px]">
               {pagedBrands.map((brand) => (
                 <div
                   key={brand.name}
@@ -601,7 +601,7 @@ export default function ProductDashboard() {
           data={positionData}
           rows={[
             { icon: <ArrowUp   className="h-3.5 w-3.5 inline" />, label: "Top",    value: 66, color: posC1 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Middle", value: 15, color: posC2 },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Middle", value: 15, color: posC2 },
             { icon: <ArrowDown className="h-3.5 w-3.5 inline" />, label: "Bottom", value: 19, color: posC3 },
           ]}
           sparklineData={positionSparkline}
@@ -617,7 +617,7 @@ export default function ProductDashboard() {
           data={sentimentData}
           rows={[
             { icon: <ThumbsUp   className="h-3.5 w-3.5 inline" />, label: "Positive", value: 46, color: posC1 },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Mixed",    value: 21, color: posC2 },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Mixed",    value: 21, color: posC2 },
             { icon: <ThumbsDown className="h-3.5 w-3.5 inline" />, label: "Negative", value: 33, color: posC3 },
           ]}
           sparklineData={sentimentSparkline}
@@ -637,11 +637,11 @@ export default function ProductDashboard() {
           centerIcon={<RefreshCw className="h-3 w-3 inline" />}
           data={citationsData}
           rows={[
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Third Party", value: 38, color: getChartColors(5)[0] },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Competitors", value: 24, color: getChartColors(5)[1] },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Your Brand",  value: 18, color: getChartColors(5)[2] },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Social",      value: 13, color: getChartColors(5)[3] },
-            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-[7px] w-[7px] rounded-full bg-current" /></span>, label: "Retailer",    value: 7,  color: getChartColors(5)[4] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Third Party", value: 38, color: getChartColors(5)[0] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Competitors", value: 24, color: getChartColors(5)[1] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Your Brand",  value: 18, color: getChartColors(5)[2] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Social",      value: 13, color: getChartColors(5)[3] },
+            { icon: <span className="inline-flex items-center justify-center h-3.5 w-3.5"><span className="block h-2 w-2 bg-current" /></span>, label: "Retailer",    value: 7,  color: getChartColors(5)[4] },
           ]}
           sparklineData={citationsSparkline}
           sparklineColor={CHART_COLORS_12[2]}
@@ -687,6 +687,47 @@ const mentionRateTrend = [
   { date: "Dec 31", scrunch: 28,   semrush: 22.6, profoundAI: 17.1, ahrefs: 16.8, peecAI: 10.4 },
 ]
 
+const RANGE_DATE_LABELS_HOME: Record<string, string> = {
+  "7D":  "Apr 27 – May 4",
+  "30D": "Apr 4 – May 4",
+  "3M":  "Feb 4 – May 4",
+}
+
+const MENTION_TREND_BY_PERIOD: Record<string, Array<Record<string, string | number>>> = {
+  "7D": [
+    { date: "Apr 27", scrunch: 25.8, semrush: 23.1, profoundAI: 15.2, ahrefs: 14.8, peecAI: 9.9  },
+    { date: "Apr 28", scrunch: 26.2, semrush: 22.8, profoundAI: 15.8, ahrefs: 15.2, peecAI: 10.1 },
+    { date: "Apr 29", scrunch: 27.1, semrush: 22.5, profoundAI: 16.0, ahrefs: 15.5, peecAI: 10.2 },
+    { date: "Apr 30", scrunch: 26.8, semrush: 23.0, profoundAI: 15.6, ahrefs: 15.8, peecAI: 10.0 },
+    { date: "May 1",  scrunch: 27.5, semrush: 22.7, profoundAI: 16.2, ahrefs: 16.1, peecAI: 10.2 },
+    { date: "May 2",  scrunch: 27.9, semrush: 22.4, profoundAI: 16.5, ahrefs: 16.4, peecAI: 10.3 },
+    { date: "May 3",  scrunch: 28.3, semrush: 22.2, profoundAI: 16.8, ahrefs: 16.6, peecAI: 10.4 },
+    { date: "May 4",  scrunch: 28.8, semrush: 22.0, profoundAI: 17.1, ahrefs: 16.9, peecAI: 10.5 },
+  ],
+  "30D": [
+    { date: "Apr 4",  scrunch: 24.8, semrush: 23.4, profoundAI: 14.8, ahrefs: 14.5, peecAI: 9.7  },
+    { date: "Apr 11", scrunch: 25.6, semrush: 23.1, profoundAI: 15.3, ahrefs: 15.0, peecAI: 9.9  },
+    { date: "Apr 18", scrunch: 26.4, semrush: 22.8, profoundAI: 15.8, ahrefs: 15.5, peecAI: 10.1 },
+    { date: "Apr 25", scrunch: 27.2, semrush: 22.5, profoundAI: 16.3, ahrefs: 16.0, peecAI: 10.3 },
+    { date: "May 2",  scrunch: 28.1, semrush: 22.2, profoundAI: 17.0, ahrefs: 16.7, peecAI: 10.4 },
+  ],
+  "3M": [
+    { date: "Feb 4",  scrunch: 21.5, semrush: 24.8, profoundAI: 12.0, ahrefs: 12.1, peecAI: 8.5  },
+    { date: "Feb 11", scrunch: 22.0, semrush: 24.5, profoundAI: 12.5, ahrefs: 12.6, peecAI: 8.7  },
+    { date: "Feb 18", scrunch: 22.4, semrush: 24.2, profoundAI: 13.0, ahrefs: 13.0, peecAI: 8.9  },
+    { date: "Feb 25", scrunch: 22.8, semrush: 24.0, profoundAI: 13.4, ahrefs: 13.4, peecAI: 9.1  },
+    { date: "Mar 4",  scrunch: 23.2, semrush: 23.8, profoundAI: 13.8, ahrefs: 13.8, peecAI: 9.3  },
+    { date: "Mar 11", scrunch: 23.6, semrush: 23.6, profoundAI: 14.1, ahrefs: 14.1, peecAI: 9.5  },
+    { date: "Mar 18", scrunch: 24.0, semrush: 23.4, profoundAI: 14.4, ahrefs: 14.4, peecAI: 9.6  },
+    { date: "Mar 25", scrunch: 24.4, semrush: 23.2, profoundAI: 14.7, ahrefs: 14.7, peecAI: 9.7  },
+    { date: "Apr 1",  scrunch: 24.8, semrush: 23.0, profoundAI: 15.0, ahrefs: 15.0, peecAI: 9.8  },
+    { date: "Apr 8",  scrunch: 25.2, semrush: 22.8, profoundAI: 15.3, ahrefs: 15.3, peecAI: 9.9  },
+    { date: "Apr 15", scrunch: 26.0, semrush: 22.6, profoundAI: 15.6, ahrefs: 15.6, peecAI: 10.0 },
+    { date: "Apr 22", scrunch: 26.8, semrush: 22.4, profoundAI: 15.9, ahrefs: 15.8, peecAI: 10.2 },
+    { date: "Apr 29", scrunch: 27.6, semrush: 22.2, profoundAI: 16.2, ahrefs: 16.1, peecAI: 10.4 },
+  ],
+}
+
 function MentionRateSection() {
   const [chartType, setChartType] = useState<"donut" | "bar" | "line" | "area">("donut")
   const [period, setPeriod] = useState<"7D" | "30D" | "3M">("30D")
@@ -730,7 +771,7 @@ function MentionRateSection() {
     <div className="flex gap-4 mb-3 flex-wrap">
       {trendLines.map((l) => (
         <div key={l.key} className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: l.color }} />
+          <span className="h-2 w-2 shrink-0" style={{ backgroundColor: l.color }} />
           <span className="text-[12px] text-ink/60">{l.label}</span>
         </div>
       ))}
@@ -791,7 +832,7 @@ function MentionRateSection() {
         <>
           <TrendLegend />
           <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
+            <LineChart data={MENTION_TREND_BY_PERIOD[period] ?? mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
               <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
               <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
               <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
@@ -813,7 +854,7 @@ function MentionRateSection() {
       <>
         <TrendLegend />
         <ResponsiveContainer width="100%" height={260}>
-          <AreaChart data={mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
+          <AreaChart data={MENTION_TREND_BY_PERIOD[period] ?? mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
             <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: P.neutral500 }} tickLine={false} axisLine={false} />
             <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
@@ -840,7 +881,7 @@ function MentionRateSection() {
         {/* Date range */}
         <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors">
           <CalendarDays className="h-3.5 w-3.5" />
-          Dec 1 – Dec 31
+          {RANGE_DATE_LABELS_HOME[period] ?? "Dec 1 – Dec 31"}
         </button>
 
         {/* Period toggle */}
