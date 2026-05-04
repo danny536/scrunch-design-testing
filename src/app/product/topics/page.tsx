@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { Icon } from "@/components/icon"
 import {
-  CalendarDays,
   MoreHorizontal,
   ChevronLeft,
   ChevronRight,
@@ -402,7 +402,7 @@ export default function TopicsPage() {
         <h1 className="font-sans font-semibold text-[36px] text-ink leading-none tracking-[-1px]">Topics</h1>
         <div className="flex items-center gap-1.5">
           <button className="flex items-center gap-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white px-3 py-1.5 text-[13px] text-ink/60 hover:bg-s-neutral-50 transition-colors">
-            <CalendarDays className="h-3.5 w-3.5" />
+            <Icon name="calendar_month" size={14} />
             {RANGE_DATE_LABELS[range] ?? "Custom"}
           </button>
           <div className="flex items-center rounded-scrunch-sm bg-s-neutral-100 p-0.5 gap-0.5">

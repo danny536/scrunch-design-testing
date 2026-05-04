@@ -6,11 +6,9 @@ import {
   Play,
   Users,
   LayoutGrid,
-  CalendarDays,
   X,
   SlidersHorizontal,
   Download,
-  Info,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
@@ -29,6 +27,7 @@ import {
   TrendingUp as LineChartIcon,
   AreaChart as AreaChartIcon,
 } from "lucide-react"
+import { Icon } from "@/components/icon"
 import {
   LineChart,
   Line,
@@ -281,7 +280,7 @@ function DonutCard({
     <div className="rounded-scrunch-lg bg-white p-5 shadow-scrunch-sm">
       <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-3">
         <span>{title}</span>
-        <Info className="h-3.5 w-3.5 text-ink/30" />
+        <Icon name="info" size={14} className="text-ink/30" />
       </div>
 
       <div className="flex items-center gap-4">
@@ -449,7 +448,7 @@ export default function ProductDashboard() {
         {/* Filter bar */}
         <div className="mb-4 flex items-center gap-2 flex-wrap">
           <button className="flex items-center gap-1.5 rounded-scrunch-pill bg-white px-3 py-1.5 text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors">
-            <CalendarDays className="h-3.5 w-3.5" />
+            <Icon name="calendar_month" size={14} />
             Last 12 weeks
           </button>
           <button className="flex items-center gap-1.5 rounded-scrunch-pill bg-white px-3 py-1.5 text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors">
@@ -471,19 +470,19 @@ export default function ProductDashboard() {
         <div className="mb-4 grid grid-cols-3 gap-4">
           <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
-              Prompts <Info className="h-3 w-3" />
+              Prompts <Icon name="info" size={12} />
             </div>
             <div className="mt-auto pt-2 text-[42px] font-normal text-ink tabular-nums leading-none tracking-tighter">207</div>
           </div>
           <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-4 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
-              Responses <Info className="h-3 w-3" />
+              Responses <Icon name="info" size={12} />
             </div>
             <div className="mt-auto pt-2 text-[42px] font-normal text-ink tabular-nums leading-none tracking-tighter">5778</div>
           </div>
           <div className="rounded-scrunch-lg bg-white px-6 pt-5 pb-6 shadow-scrunch-sm flex flex-col">
             <div className="flex items-center gap-1 text-[12px] text-ink/50">
-              Platforms <Info className="h-3 w-3" />
+              Platforms <Icon name="info" size={12} />
             </div>
             <div className="mt-auto pt-2">
               <PlatformIcons />
@@ -498,7 +497,7 @@ export default function ProductDashboard() {
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-4 shrink-0">
               Competitive Presence
               <span className="text-ink/35 font-normal">(% of total)</span>
-              <Info className="h-3.5 w-3.5 text-ink/30" />
+              <Icon name="info" size={14} className="text-ink/30" />
             </div>
             <div className="flex-1 min-h-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -540,7 +539,7 @@ export default function ProductDashboard() {
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 mb-4">
               Top brands
               <span className="text-ink/35 font-normal">(avg %)</span>
-              <Info className="h-3.5 w-3.5 text-ink/30" />
+              <Icon name="info" size={14} className="text-ink/30" />
             </div>
             <div className="space-y-0 min-h-[260px]">
               {pagedBrands.map((brand) => (
@@ -880,7 +879,7 @@ function MentionRateSection() {
       <div className="flex items-center gap-2 mb-3 flex-wrap">
         {/* Date range */}
         <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors">
-          <CalendarDays className="h-3.5 w-3.5" />
+          <Icon name="calendar_month" size={14} />
           {RANGE_DATE_LABELS_HOME[period] ?? "Dec 1 – Dec 31"}
         </button>
 
@@ -956,7 +955,7 @@ function MentionRateSection() {
         {/* Header */}
         <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 px-7 pt-6 pb-5">
           Mention Rate For Scrunch Broken Down By Competitor
-          <Info className="h-3.5 w-3.5 text-ink/30" />
+          <Icon name="info" size={14} className="text-ink/30" />
         </div>
 
         {/* Chart + right column */}

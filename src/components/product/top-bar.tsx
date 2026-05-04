@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { BookOpen, ChevronDown, ChevronsUpDown, Search, Video } from "lucide-react"
+import { ChevronDown, ChevronsUpDown, Search } from "lucide-react"
+import { Icon } from "@/components/icon"
 
 export function ProductTopBar() {
   const [showLearn, setShowLearn] = useState(false)
@@ -54,7 +55,7 @@ export function ProductTopBar() {
             onClick={() => setShowLearn((v) => !v)}
             className="flex items-center gap-1.5 rounded-scrunch-md border border-s-neutral-200 bg-white px-2.5 py-1.5 text-sm text-ink/70 hover:bg-s-neutral-50 hover:text-ink transition-colors"
           >
-            <BookOpen className="h-4 w-4" />
+            <Icon name="auto_stories" size={16} />
             <span className="font-medium">Learn</span>
             <ChevronDown className="h-3.5 w-3.5" />
           </button>
@@ -65,14 +66,14 @@ export function ProductTopBar() {
                 onClick={() => setShowLearn(false)}
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-[13.5px] text-ink hover:bg-s-neutral-50 transition-colors"
               >
-                <BookOpen className="h-4 w-4 shrink-0 text-ink/60" />
+                <Icon name="auto_stories" size={16} className="shrink-0 text-ink/60" />
                 Getting Started
               </button>
               <button
                 onClick={() => setShowLearn(false)}
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-[13.5px] text-ink hover:bg-s-neutral-50 transition-colors"
               >
-                <Video className="h-4 w-4 shrink-0 text-ink/60" />
+                <Icon name="play_circle" size={16} className="shrink-0 text-ink/60" />
                 Watch an Intro
               </button>
             </div>
