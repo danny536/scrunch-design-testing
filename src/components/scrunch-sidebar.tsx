@@ -28,7 +28,7 @@ const navigation: { section?: string; items: NavItem[] }[] = [
     items: [
       { id: "explorer",  label: "Explorer",           icon: "explore",       badge: "BETA", href: "/product/explorer" },
       { id: "topics",    label: "Topics",             icon: "sell",          badge: "BETA", href: "/product/topics" },
-      { id: "prompts",   label: "Prompts Monitoring", icon: "chat" },
+      { id: "prompts",   label: "Prompts Monitoring", icon: "chat", href: "/product/prompts" },
       { id: "citations", label: "Citations",          icon: "link" },
       { id: "insights",  label: "Insights",           icon: "flare" },
       { id: "shopping",  label: "Shopping",           icon: "shopping_cart", badge: "NEW" },

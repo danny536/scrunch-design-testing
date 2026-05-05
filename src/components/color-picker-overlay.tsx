@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { X } from "lucide-react"
+import { useState, useCallback, useEffect } from "react"
+import { X, Download, RefreshCw, FileScan, Check, Copy } from "lucide-react"
 import { CHART_PALETTE_FAMILIES, type ChartPaletteEntry, type ChartPaletteFamily } from "@/lib/chart-palette"
 
 /* ─────────────────────────────────────────────────────────
@@ -309,9 +309,346 @@ function DataPaletteGrid({ onCopy }: { onCopy: (cls: string) => void }) {
   )
 }
 
+/* ─────────────────────────────────────────────────────────
+   Combined Export tab — PNG download + Figma export
+───────────────────────────────────────────────────────── */
+
+type DiscoveredSection = { id: string; label: string; el: HTMLElement }
+type FigmaOutputMode   = "newFile" | "clipboard"
+type FigmaExportTarget = "page" | "sections"
+
+function ExportTab({ onToast }: { onToast: (msg: string) => void }) {
+  // PNG state
+  const [pngSections, setPngSections] = useState<DiscoveredSection[]>([])
+  const [exporting,   setExporting]   = useState<string | null>(null)
+
+  // Figma state
+  const [target,       setTarget]      = useState<FigmaExportTarget>("page")
+  const [outputMode,   setOutputMode]  = useState<FigmaOutputMode>("newFile")
+  const [figmaSections, setFigmaSections] = useState<{ id: string; label: string }[]>([])
+  const [selected,     setSelected]    = useState<Set<string>>(new Set())
+  const [copied,       setCopied]      = useState(false)
+  const [pageUrl,      setPageUrl]     = useState("")
+  const [pageName,     setPageName]    = useState("")
+  const [delay,        setDelay]       = useState(4)
+
+  const scan = useCallback(() => {
+    const pngFound: DiscoveredSection[] = []
+    const figmaFound: { id: string; label: string }[] = []
+    document.querySelectorAll<HTMLElement>("[data-export-id]").forEach((el) => {
+      const id    = el.getAttribute("data-export-id")!
+      const label = el.getAttribute("data-export-label") || id
+      pngFound.push({ id, label, el })
+      figmaFound.push({ id, label })
+    })
+    setPngSections(pngFound)
+    setFigmaSections(figmaFound)
+    setSelected(new Set(figmaFound.map((s) => s.id)))
+    if (typeof window !== "undefined") {
+      setPageUrl(window.location.href)
+      const h1 = document.querySelector("h1")
+      setPageName(h1?.textContent?.trim() || document.title || "Page")
+    }
+  }, [])
+
+  useEffect(() => { scan() }, [scan])
+
+  // PNG helpers
+  const doPngExport = async (el: HTMLElement, filename: string) => {
+    setExporting(filename)
+    try {
+      const { toPng } = await import("html-to-image")
+      el.scrollIntoView({ block: "start", behavior: "instant" })
+      await new Promise((r) => setTimeout(r, 120))
+      const dataUrl = await toPng(el, {
+        backgroundColor: "#ffffff",
+        pixelRatio: 2,
+        height: el.scrollHeight,
+        width: el.scrollWidth,
+        style: { overflow: "visible" },
+        skipFonts: false,
+        cacheBust: true,
+      })
+      const a = document.createElement("a")
+      a.href = dataUrl
+      a.download = `${filename}.png`
+      a.click()
+      onToast(`Downloaded ${filename}.png`)
+    } catch (err) {
+      onToast(`Export failed: ${err instanceof Error ? err.message : "unknown error"}`)
+    } finally {
+      setExporting(null)
+    }
+  }
+
+  const exportFullPage = async () => {
+    const content = document.querySelector<HTMLElement>("main > div") ?? document.querySelector<HTMLElement>("main")
+    if (!content) { onToast("No page content found"); return }
+    await doPngExport(content, "full-page")
+  }
+
+  // Figma helpers
+  const buildPrompt = () => {
+    const selArr = Array.from(selected)
+    const targetDesc =
+      target === "page"
+        ? `the entire "${pageName}" page`
+        : selArr.length > 0
+          ? `these sections from "${pageName}": ${selArr.join(", ")}`
+          : `the entire "${pageName}" page`
+    const outputDesc =
+      outputMode === "newFile" ? "Create a new Figma file." : "Copy to the Figma clipboard."
+    return `Export ${targetDesc} to Figma. Dev server URL: ${pageUrl}. ${outputDesc} Use a ${delay * 1000}ms capture delay.`
+  }
+
+  const copyPrompt = async () => {
+    const prompt = buildPrompt()
+    try {
+      await navigator.clipboard.writeText(prompt)
+    } catch {
+      const ta = document.createElement("textarea")
+      ta.value = prompt
+      document.body.appendChild(ta); ta.select()
+      document.execCommand("copy")
+      document.body.removeChild(ta)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2200)
+  }
+
+  const toggleSection = (id: string) =>
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id); else next.add(id)
+      return next
+    })
+
+  return (
+    <div className="py-4 space-y-6">
+
+      {/* ── PNG Export ── */}
+      <div>
+        <p className="text-[11px] font-medium text-ink/40 uppercase tracking-[0.06em] mb-3">PNG Export</p>
+
+        <div className="space-y-3">
+          {/* Full page */}
+          <button
+            type="button"
+            onClick={exportFullPage}
+            disabled={exporting === "full-page"}
+            className="flex items-center gap-2 rounded-scrunch-md border border-s-neutral-200 bg-white px-3 py-2 text-[13px] text-ink/70 hover:bg-s-neutral-50 hover:text-ink transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {exporting === "full-page"
+              ? <RefreshCw size={14} className="animate-spin" />
+              : <FileScan size={14} />}
+            Export entire page
+          </button>
+
+          {/* Named sections */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] text-ink/40">
+                Named sections {pngSections.length > 0 && `(${pngSections.length})`}
+              </p>
+              <button
+                type="button"
+                onClick={scan}
+                className="flex items-center gap-1 text-[11px] text-ink/40 hover:text-ink transition-colors"
+              >
+                <RefreshCw size={11} /> Scan
+              </button>
+            </div>
+
+            {pngSections.length === 0 ? (
+              <div className="rounded-scrunch-md border border-dashed border-s-neutral-300 px-4 py-4 text-center">
+                <p className="text-[12px] text-ink/40 leading-relaxed">No sections found on this page.</p>
+                <p className="mt-1.5 text-[11px] text-ink/30 font-plex-mono leading-relaxed">
+                  Add <span className="bg-s-neutral-100 px-1 rounded">data-export-id=&quot;name&quot;</span> to any element.
+                </p>
+              </div>
+            ) : (
+              <div className="rounded-scrunch-md border border-s-neutral-200 overflow-hidden divide-y divide-s-neutral-100">
+                {pngSections.map(({ id, label, el }) => (
+                  <div key={id} className="flex items-center justify-between px-3 py-2.5 hover:bg-s-neutral-50 transition-colors">
+                    <span className="text-[13px] text-ink/70">{label}</span>
+                    <button
+                      type="button"
+                      onClick={() => doPngExport(el, id)}
+                      disabled={exporting === id}
+                      className="flex items-center gap-1.5 rounded-scrunch-md border border-s-neutral-200 bg-white px-2.5 py-1 text-[11.5px] text-ink/60 hover:bg-s-neutral-50 hover:text-ink transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {exporting === id
+                        ? <RefreshCw size={11} className="animate-spin" />
+                        : <Download size={11} />}
+                      PNG
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-s-neutral-200" />
+
+      {/* ── Figma Export ── */}
+      <div className="space-y-5">
+        <p className="text-[11px] font-medium text-ink/40 uppercase tracking-[0.06em]">Figma Export</p>
+
+        {/* Export target */}
+        <div>
+          <p className="text-[11px] text-ink/40 mb-2">Export target</p>
+          <div className="flex gap-1.5">
+            {(["page", "sections"] as FigmaExportTarget[]).map((t) => (
+              <button key={t} type="button" onClick={() => setTarget(t)}
+                className={`px-3 py-1.5 rounded-scrunch-pill text-[12px] font-medium transition-colors ${
+                  target === t
+                    ? "bg-s-blue-600 text-white"
+                    : "bg-s-neutral-100 text-ink/60 hover:bg-s-neutral-200"
+                }`}
+              >
+                {t === "page" ? "Whole page" : "Select sections"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Section selector */}
+        {target === "sections" && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] text-ink/40">
+                Sections {figmaSections.length > 0 && `(${figmaSections.length})`}
+              </p>
+              <button type="button" onClick={scan}
+                className="flex items-center gap-1 text-[11px] text-ink/40 hover:text-ink transition-colors">
+                <RefreshCw size={11} /> Scan
+              </button>
+            </div>
+            {figmaSections.length === 0 ? (
+              <div className="rounded-scrunch-md border border-dashed border-s-neutral-300 px-4 py-4 text-center">
+                <p className="text-[12px] text-ink/40">No sections found on this page.</p>
+                <p className="mt-1.5 text-[11px] text-ink/30 font-plex-mono">
+                  Add <span className="bg-s-neutral-100 px-1 rounded">data-export-id=&quot;name&quot;</span> to any element.
+                </p>
+              </div>
+            ) : (
+              <div className="rounded-scrunch-md border border-s-neutral-200 overflow-hidden divide-y divide-s-neutral-100">
+                {figmaSections.map(({ id, label }) => (
+                  <label key={id}
+                    className="flex items-center gap-3 px-3 py-2.5 hover:bg-s-neutral-50 cursor-pointer transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(id)}
+                      onChange={() => toggleSection(id)}
+                      className="h-3.5 w-3.5 accent-blue-600 rounded"
+                    />
+                    <span className="text-[13px] text-ink/70 flex-1">{label}</span>
+                    <span className="text-[11px] font-plex-mono text-ink/30">{id}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Output mode */}
+        <div>
+          <p className="text-[11px] text-ink/40 mb-2">Output</p>
+          <div className="flex gap-1.5">
+            {([
+              ["newFile",   "New Figma file"  ],
+              ["clipboard", "Figma clipboard" ],
+            ] as [FigmaOutputMode, string][]).map(([m, label]) => (
+              <button key={m} type="button" onClick={() => setOutputMode(m)}
+                className={`px-3 py-1.5 rounded-scrunch-pill text-[12px] font-medium transition-colors ${
+                  outputMode === m
+                    ? "bg-s-blue-600 text-white"
+                    : "bg-s-neutral-100 text-ink/60 hover:bg-s-neutral-200"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Capture delay */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[11px] text-ink/40">Capture delay</p>
+            <span className="text-[12px] font-plex-mono text-ink/60">{delay}s</span>
+          </div>
+          <input
+            type="range" min={1} max={10} step={0.5} value={delay}
+            onChange={(e) => setDelay(Number(e.target.value))}
+            className="w-full accent-s-blue-600 h-1.5 rounded-full cursor-pointer"
+          />
+          <div className="flex justify-between mt-1">
+            <span className="text-[10px] text-ink/30 font-plex-mono">1s</span>
+            <span className="text-[10px] text-ink/30 font-plex-mono">10s</span>
+          </div>
+          <p className="text-[11px] text-ink/35 mt-1.5 leading-snug">
+            Increase if charts or animations haven&apos;t finished loading when captured.
+          </p>
+        </div>
+
+        {/* How it works */}
+        <div className="rounded-scrunch-md bg-s-neutral-100 border border-s-neutral-200 px-4 py-3.5">
+          <p className="text-[12px] font-semibold text-ink/70 mb-3">How to export</p>
+          <ol className="space-y-2.5">
+            {[
+              "Choose your target and output mode above.",
+              "Click \"Copy prompt\" to copy the export instruction.",
+              "Paste it into the Claude Code chat.",
+              "Claude captures the page and pushes it to Figma.",
+            ].map((step, i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <span
+                  className="shrink-0 flex items-center justify-center rounded-full bg-s-blue-600 text-white font-bold text-[10px]"
+                  style={{ width: 17, height: 17, paddingTop: 0.5 }}
+                >
+                  {i + 1}
+                </span>
+                <span className="text-[12px] text-ink/60 leading-snug">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Generated prompt preview */}
+        <div>
+          <p className="text-[11px] text-ink/40 mb-2">Export prompt</p>
+          <div className="rounded-scrunch-md border border-s-neutral-200 bg-s-neutral-50 px-3 py-2.5 mb-2.5">
+            <p className="text-[11.5px] font-plex-mono text-ink/55 leading-relaxed break-words">
+              {buildPrompt()}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={copyPrompt}
+            className={`flex items-center gap-2 w-full justify-center rounded-scrunch-md px-4 py-2.5 text-[13px] font-medium transition-colors ${
+              copied
+                ? "bg-s-green-200 text-s-green-800 border border-s-green-300"
+                : "bg-s-blue-600 text-white hover:bg-s-blue-700"
+            }`}
+          >
+            {copied
+              ? <><Check size={14} />Prompt copied!</>
+              : <><Copy  size={14} />Copy prompt</>}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 export function ColorPickerOverlay() {
   const [open, setOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<"palette" | "data">("palette")
+  const [activeTab, setActiveTab] = useState<"palette" | "data" | "export">("palette")
   const [toast, setToast] = useState<string | null>(null)
 
   const handleCopy = useCallback(async (cls: string) => {
@@ -350,14 +687,14 @@ export function ColorPickerOverlay() {
           transition-colors duration-150
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-s-blue-500
         "
-        aria-label="Toggle color palette"
+        aria-label="Toggle tools panel"
       >
         <span
           className="inline-block rounded-full flex-shrink-0"
           style={{ width: 10, height: 10, backgroundColor: dotColor }}
           aria-hidden
         />
-        Colors
+        Tools
       </button>
 
       {/* Backdrop (closes panel on outside click) */}
@@ -413,7 +750,7 @@ export function ColorPickerOverlay() {
 
           {/* Tab bar */}
           <div className="flex gap-1 px-5 pt-3 pb-0 flex-shrink-0 border-b border-s-neutral-200">
-            {(["palette", "data"] as const).map((tab) => (
+            {(["palette", "data", "export"] as const).map((tab) => (
               <button
                 key={tab}
                 type="button"
@@ -425,7 +762,9 @@ export function ColorPickerOverlay() {
                     : "border-transparent text-ink/40 hover:text-ink/70"}
                 `}
               >
-                {tab === "palette" ? "All Colors" : "Full Data Palette"}
+                {tab === "palette" ? "All Colors"
+                  : tab === "data"  ? "Data Palette"
+                  :                  "Export"}
               </button>
             ))}
           </div>
@@ -438,8 +777,10 @@ export function ColorPickerOverlay() {
                   <PaletteRow key={group.prefix} group={group} onCopy={handleCopy} />
                 ))}
               </>
-            ) : (
+            ) : activeTab === "data" ? (
               <DataPaletteGrid onCopy={handleCopy} />
+            ) : (
+              <ExportTab onToast={(msg) => { setToast(msg); setTimeout(() => setToast(null), 2500) }} />
             )}
           </div>
         </div>

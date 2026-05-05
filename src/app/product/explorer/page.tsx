@@ -6,6 +6,10 @@ import {
   Plus,
   X,
   ChevronDown,
+  PieChart as PieChartIcon,
+  BarChart2 as BarChartIcon,
+  TrendingUp as LineChartIcon,
+  AreaChart as AreaChartIcon,
 } from "lucide-react"
 import { Icon } from "@/components/icon"
 import {
@@ -21,6 +25,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
+  AreaChart,
+  Area,
 } from "recharts"
 import { CHART_COLORS_12 } from "@/lib/chart-palette"
 
@@ -1020,6 +1026,396 @@ export default function ExplorerPage() {
         </div>
 
       </div>{/* end two-column */}
+
+      {/* ── Competitor Mention Rate ───────────────── */}
+      <MentionRateSection />
+
     </div>
+  )
+}
+
+// ─── Competitor mention rate data ─────────────────────────────────────────────
+
+const mentionRateData = [
+  // ── Full Data Palette: slots 1–12 from chart-palette.ts ──
+  { name: "Scrunch",                  pct: 28,   color: CHART_COLORS_12[0],  dark: false }, //  1 Blue 800
+  { name: "Semrush",                  pct: 22.6, color: CHART_COLORS_12[1],  dark: false }, //  2 Blue 500
+  { name: "Profound AI",              pct: 17.1, color: CHART_COLORS_12[2],  dark: true  }, //  3 Blue 300
+  { name: "Ahrefs",                   pct: 16.8, color: CHART_COLORS_12[3],  dark: false }, //  4 Green 800
+  { name: "Peec AI",                  pct: 10.4, color: CHART_COLORS_12[4],  dark: false }, //  5 Green 600
+  { name: "Writesonic",               pct: 4.9,  color: CHART_COLORS_12[5],  dark: true  }, //  6 Green 400
+  { name: "Brandwatch",               pct: 3.6,  color: CHART_COLORS_12[6],  dark: false }, //  7 Neutral 800
+  { name: "Athena HQ",                pct: 2.2,  color: CHART_COLORS_12[7],  dark: false }, //  8 Neutral 500
+  { name: "Goodie",                   pct: 1.4,  color: CHART_COLORS_12[8],  dark: true  }, //  9 Neutral 300
+  { name: "HubSpot AI Search Grader", pct: 0.8,  color: CHART_COLORS_12[9],  dark: false }, // 10 Amber 800
+  { name: "Yext",                     pct: 0.5,  color: CHART_COLORS_12[10], dark: true  }, // 11 Amber 500
+  { name: "Bluefish AI",              pct: 0.2,  color: CHART_COLORS_12[11], dark: true  }, // 12 Amber 300
+  { name: "Citate.ai",                pct: 0,    color: CHART_COLORS_12[9],  dark: false }, // cycle → Amber 800
+  { name: "Revere AI",                pct: 0,    color: CHART_COLORS_12[10], dark: true  }, // cycle → Amber 500
+]
+
+// Time-series data for line / area chart types (top 5 competitors, weekly Dec data)
+const mentionRateTrend = [
+  { date: "Dec 1",  scrunch: 24.2, semrush: 23.8, profoundAI: 14.1, ahrefs: 14.0, peecAI: 9.8  },
+  { date: "Dec 8",  scrunch: 25.1, semrush: 23.2, profoundAI: 15.0, ahrefs: 14.8, peecAI: 10.0 },
+  { date: "Dec 15", scrunch: 26.3, semrush: 22.9, profoundAI: 15.8, ahrefs: 15.4, peecAI: 10.1 },
+  { date: "Dec 22", scrunch: 27.1, semrush: 22.7, profoundAI: 16.4, ahrefs: 16.1, peecAI: 10.3 },
+  { date: "Dec 31", scrunch: 28,   semrush: 22.6, profoundAI: 17.1, ahrefs: 16.8, peecAI: 10.4 },
+]
+
+const RANGE_DATE_LABELS_HOME: Record<string, string> = {
+  "7D":  "Apr 27 – May 4",
+  "30D": "Apr 4 – May 4",
+  "3M":  "Feb 4 – May 4",
+}
+
+const MENTION_TREND_BY_PERIOD: Record<string, Array<Record<string, string | number>>> = {
+  "7D": [
+    { date: "Apr 27", scrunch: 25.8, semrush: 23.1, profoundAI: 15.2, ahrefs: 14.8, peecAI: 9.9  },
+    { date: "Apr 28", scrunch: 26.2, semrush: 22.8, profoundAI: 15.8, ahrefs: 15.2, peecAI: 10.1 },
+    { date: "Apr 29", scrunch: 27.1, semrush: 22.5, profoundAI: 16.0, ahrefs: 15.5, peecAI: 10.2 },
+    { date: "Apr 30", scrunch: 26.8, semrush: 23.0, profoundAI: 15.6, ahrefs: 15.8, peecAI: 10.0 },
+    { date: "May 1",  scrunch: 27.5, semrush: 22.7, profoundAI: 16.2, ahrefs: 16.1, peecAI: 10.2 },
+    { date: "May 2",  scrunch: 27.9, semrush: 22.4, profoundAI: 16.5, ahrefs: 16.4, peecAI: 10.3 },
+    { date: "May 3",  scrunch: 28.3, semrush: 22.2, profoundAI: 16.8, ahrefs: 16.6, peecAI: 10.4 },
+    { date: "May 4",  scrunch: 28.8, semrush: 22.0, profoundAI: 17.1, ahrefs: 16.9, peecAI: 10.5 },
+  ],
+  "30D": [
+    { date: "Apr 4",  scrunch: 24.8, semrush: 23.4, profoundAI: 14.8, ahrefs: 14.5, peecAI: 9.7  },
+    { date: "Apr 11", scrunch: 25.6, semrush: 23.1, profoundAI: 15.3, ahrefs: 15.0, peecAI: 9.9  },
+    { date: "Apr 18", scrunch: 26.4, semrush: 22.8, profoundAI: 15.8, ahrefs: 15.5, peecAI: 10.1 },
+    { date: "Apr 25", scrunch: 27.2, semrush: 22.5, profoundAI: 16.3, ahrefs: 16.0, peecAI: 10.3 },
+    { date: "May 2",  scrunch: 28.1, semrush: 22.2, profoundAI: 17.0, ahrefs: 16.7, peecAI: 10.4 },
+  ],
+  "3M": [
+    { date: "Feb 4",  scrunch: 21.5, semrush: 24.8, profoundAI: 12.0, ahrefs: 12.1, peecAI: 8.5  },
+    { date: "Feb 11", scrunch: 22.0, semrush: 24.5, profoundAI: 12.5, ahrefs: 12.6, peecAI: 8.7  },
+    { date: "Feb 18", scrunch: 22.4, semrush: 24.2, profoundAI: 13.0, ahrefs: 13.0, peecAI: 8.9  },
+    { date: "Feb 25", scrunch: 22.8, semrush: 24.0, profoundAI: 13.4, ahrefs: 13.4, peecAI: 9.1  },
+    { date: "Mar 4",  scrunch: 23.2, semrush: 23.8, profoundAI: 13.8, ahrefs: 13.8, peecAI: 9.3  },
+    { date: "Mar 11", scrunch: 23.6, semrush: 23.6, profoundAI: 14.1, ahrefs: 14.1, peecAI: 9.5  },
+    { date: "Mar 18", scrunch: 24.0, semrush: 23.4, profoundAI: 14.4, ahrefs: 14.4, peecAI: 9.6  },
+    { date: "Mar 25", scrunch: 24.4, semrush: 23.2, profoundAI: 14.7, ahrefs: 14.7, peecAI: 9.7  },
+    { date: "Apr 1",  scrunch: 24.8, semrush: 23.0, profoundAI: 15.0, ahrefs: 15.0, peecAI: 9.8  },
+    { date: "Apr 8",  scrunch: 25.2, semrush: 22.8, profoundAI: 15.3, ahrefs: 15.3, peecAI: 9.9  },
+    { date: "Apr 15", scrunch: 26.0, semrush: 22.6, profoundAI: 15.6, ahrefs: 15.6, peecAI: 10.0 },
+    { date: "Apr 22", scrunch: 26.8, semrush: 22.4, profoundAI: 15.9, ahrefs: 15.8, peecAI: 10.2 },
+    { date: "Apr 29", scrunch: 27.6, semrush: 22.2, profoundAI: 16.2, ahrefs: 16.1, peecAI: 10.4 },
+  ],
+}
+
+function MentionRateSection() {
+  const [chartType, setChartType] = useState<"donut" | "bar" | "line" | "area">("donut")
+  const [period, setPeriod] = useState<"7D" | "30D" | "3M">("30D")
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  const trendLines = [
+    { key: "scrunch",    label: "Scrunch",     color: CHART_COLORS_12[0] }, // Blue 800
+    { key: "semrush",    label: "Semrush",     color: CHART_COLORS_12[1] }, // Blue 500
+    { key: "profoundAI", label: "Profound AI", color: CHART_COLORS_12[2] }, // Blue 300
+    { key: "ahrefs",     label: "Ahrefs",      color: CHART_COLORS_12[3] }, // Green 800
+    { key: "peecAI",     label: "Peec AI",     color: CHART_COLORS_12[4] }, // Green 600
+  ]
+
+  const chartOptions = [
+    { type: "donut" as const, label: "Donut", icon: <PieChartIcon  className="h-3.5 w-3.5" /> },
+    { type: "bar"   as const, label: "Bar",   icon: <BarChartIcon  className="h-3.5 w-3.5" /> },
+    { type: "line"  as const, label: "Line",  icon: <LineChartIcon className="h-3.5 w-3.5" /> },
+    { type: "area"  as const, label: "Area",  icon: <AreaChartIcon className="h-3.5 w-3.5" /> },
+  ]
+
+  const renderDonutLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, index }: {
+    cx?: number; cy?: number; midAngle?: number; innerRadius?: number; outerRadius?: number; percent?: number; index?: number
+  }) => {
+    if (index === undefined || mentionRateData[index].pct < 2) return null
+    const RADIAN = Math.PI / 180
+    const ir = innerRadius ?? 0
+    const or = outerRadius ?? 0
+    const r = ir + (or - ir) * 0.55
+    const x = (cx ?? 0) + r * Math.cos(-(midAngle ?? 0) * RADIAN)
+    const y = (cy ?? 0) + r * Math.sin(-(midAngle ?? 0) * RADIAN)
+    const entry = mentionRateData[index]
+    return (
+      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central"
+        fontSize={12} fontWeight={600}>
+        {`${entry.pct}%`}
+      </text>
+    )
+  }
+
+  const TrendLegend = () => (
+    <div className="flex gap-4 mb-3 flex-wrap">
+      {trendLines.map((l) => (
+        <div key={l.key} className="flex items-center gap-1.5">
+          <span className="h-2 w-2 shrink-0" style={{ backgroundColor: l.color }} />
+          <span className="text-[12px] text-ink/60">{l.label}</span>
+        </div>
+      ))}
+    </div>
+  )
+
+  const renderChart = () => {
+    if (chartType === "donut") {
+      return (
+        <div className="shrink-0 relative" style={{
+          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 27px, var(--chart-grid) 27px, var(--chart-grid) 28px), repeating-linear-gradient(90deg, transparent, transparent 27px, var(--chart-grid) 27px, var(--chart-grid) 28px)`,
+        }}>
+          <PieChart width={520} height={520}>
+            <Pie data={mentionRateData} cx={260} cy={260} innerRadius={134} outerRadius={250}
+              dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={0}
+              labelLine={false} label={renderDonutLabel}>
+              {mentionRateData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+            </Pie>
+          </PieChart>
+          {/* Grain overlay */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23f)'/></svg>")`,
+            backgroundRepeat: "repeat",
+            opacity: 0.13,
+            mixBlendMode: "multiply",
+          }} />
+        </div>
+      )
+    }
+
+    if (chartType === "bar") {
+      return (
+        <ResponsiveContainer width="100%" height={360}>
+          <BarChart
+            data={mentionRateData.slice(0, 10)}
+            layout="vertical"
+            margin={{ top: 0, right: 40, bottom: 0, left: 120 }}
+          >
+            <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
+            <XAxis type="number" domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
+              tick={{ fontSize: 11, fill: neutral500 }} tickLine={false} axisLine={false} />
+            <YAxis type="category" dataKey="name" width={110}
+              tick={{ fontSize: 12, fill: "#1D1107" }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
+              formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
+            <Bar dataKey="pct" radius={[0, 4, 4, 0]}>
+              {mentionRateData.slice(0, 10).map((entry, i) => (
+                <Cell key={i} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )
+    }
+
+    if (chartType === "line") {
+      return (
+        <>
+          <TrendLegend />
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={MENTION_TREND_BY_PERIOD[period] ?? mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
+              <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: neutral500 }} tickLine={false} axisLine={false} />
+              <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
+                tick={{ fontSize: 11, fill: neutral500 }} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
+                formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
+              {trendLines.map((l) => (
+                <Line key={l.key} type="monotone" dataKey={l.key}
+                  stroke={l.color} strokeWidth={2} dot={false} name={l.label} />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        </>
+      )
+    }
+
+    // area
+    return (
+      <>
+        <TrendLegend />
+        <ResponsiveContainer width="100%" height={260}>
+          <AreaChart data={MENTION_TREND_BY_PERIOD[period] ?? mentionRateTrend} margin={{ top: 4, right: 12, bottom: 0, left: -16 }}>
+            <CartesianGrid strokeDasharray="2 3" stroke="var(--chart-grid)" />
+            <XAxis dataKey="date" tick={{ fontSize: 11, fill: neutral500 }} tickLine={false} axisLine={false} />
+            <YAxis domain={[0, 35]} tickFormatter={(v: number) => `${v}%`}
+              tick={{ fontSize: 11, fill: neutral500 }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", boxShadow: "var(--tooltip-shadow)" }}
+              formatter={(v) => [v !== undefined ? `${v}%` : ""]} />
+            {trendLines.map((l) => (
+              <Area key={l.key} type="monotone" dataKey={l.key}
+                stroke={l.color} fill={l.color} fillOpacity={0.12}
+                strokeWidth={2} dot={false} name={l.label} />
+            ))}
+          </AreaChart>
+        </ResponsiveContainer>
+      </>
+    )
+  }
+
+  const activeChart = chartOptions.find((o) => o.type === chartType)!
+
+  return (
+    <>
+      {/* Control bar — outside the card */}
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        {/* Date range */}
+        <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors">
+          <Icon name="calendar_month" size={14} />
+          {RANGE_DATE_LABELS_HOME[period] ?? "Dec 1 – Dec 31"}
+        </button>
+
+        {/* Period toggle */}
+        <div className="flex items-center rounded-scrunch-sm bg-s-neutral-100 p-0.5 gap-0.5">
+          {(["7D", "30D", "3M"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPeriod(p)}
+              className={`px-2.5 py-1 text-[12px] rounded-scrunch-xs transition-colors ${
+                period === p
+                  ? "bg-white text-ink font-medium shadow-scrunch-sm"
+                  : "text-ink/50 hover:text-ink/70"
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+
+        {/* Compare */}
+        <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/60 hover:bg-s-neutral-100 transition-colors">
+          Compare
+          <ChevronDown className="h-3 w-3" />
+        </button>
+
+        {/* Right side */}
+        <div className="ml-auto flex items-center gap-2">
+          {/* Granularity */}
+          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/60 hover:bg-s-neutral-100 transition-colors">
+            Day
+            <ChevronDown className="h-3 w-3" />
+          </button>
+
+          {/* Chart type dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setDropdownOpen((v) => !v)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-scrunch-sm border border-s-neutral-200 bg-white text-[12.5px] text-ink/70 hover:bg-s-neutral-100 transition-colors"
+            >
+              {activeChart.icon}
+              <span>{activeChart.label}</span>
+              <ChevronDown className="h-3 w-3 text-ink/40" />
+            </button>
+            {dropdownOpen && (
+              <>
+                {/* Backdrop */}
+                <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
+                <div className="absolute right-0 top-full mt-1 w-36 rounded-scrunch-md bg-white shadow-scrunch-md border border-s-neutral-200 overflow-hidden z-20">
+                  {chartOptions.map(({ type, label, icon }) => (
+                    <button
+                      key={type}
+                      onClick={() => { setChartType(type); setDropdownOpen(false) }}
+                      className={`flex items-center gap-2 w-full px-3 py-2 text-[13px] text-left transition-colors ${
+                        chartType === type
+                          ? "bg-s-neutral-100 text-ink font-medium"
+                          : "text-ink/70 hover:bg-s-neutral-50"
+                      }`}
+                    >
+                      {icon}
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* White card */}
+      <div className="rounded-scrunch-xl bg-white shadow-scrunch-sm overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center gap-1.5 text-[15px] font-medium text-ink/60 px-7 pt-6 pb-5">
+          Mention Rate For Scrunch Broken Down By Competitor
+          <Icon name="info" size={14} className="text-ink/30" />
+        </div>
+
+        {/* Chart + right column */}
+        {chartType === "donut" ? (
+          <div className="grid grid-cols-2">
+            {/* Left half: donut fills full area */}
+            <div
+              className="relative flex items-center justify-center"
+              style={{
+                backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 47px, var(--chart-grid) 47px, var(--chart-grid) 48px), repeating-linear-gradient(90deg, transparent, transparent 47px, var(--chart-grid) 47px, var(--chart-grid) 48px)`,
+              }}
+            >
+              <div className="relative py-7" style={{ zIndex: 1 }}>
+                <PieChart width={500} height={500}>
+                  <Pie data={mentionRateData} cx={250} cy={250} innerRadius={130} outerRadius={234}
+                    dataKey="pct" startAngle={90} endAngle={-270} strokeWidth={0}
+                    labelLine={false} label={renderDonutLabel}>
+                    {mentionRateData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                  </Pie>
+                </PieChart>
+              </div>
+              {/* Grain overlay */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                backgroundImage: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23f)'/></svg>")`,
+                backgroundRepeat: "repeat",
+                opacity: 0.13,
+                mixBlendMode: "multiply",
+              }} />
+            </div>
+            {/* Right half: competitor table */}
+            <div className="min-w-0 px-7 pb-6">
+              <div className="grid grid-cols-[1fr_auto] border-b border-ink/[8%] pb-2 text-[12px] font-medium text-ink/40 uppercase tracking-[0.05em]">
+                <span>Competitor</span>
+                <span>Average</span>
+              </div>
+              {mentionRateData.map((item) => (
+                <div key={item.name} className="grid grid-cols-[1fr_auto] items-center border-b border-ink/[5%] py-2.5">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-scrunch-xs" style={{ backgroundColor: item.color }}>
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                        <path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span className="text-[13px] text-ink/80">{item.name}</span>
+                  </div>
+                  <span className="text-[13px] font-normal font-plex-mono text-ink tabular-nums pl-6">
+                    {item.pct > 0 ? `${item.pct}%` : "0%"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="px-7 pb-6">
+            {renderChart()}
+            <div className="mt-6">
+              <div className="grid grid-cols-[1fr_2fr_120px] border-b border-ink/[8%] pb-2 text-[12px] font-medium text-ink/40 uppercase tracking-[0.05em]">
+                <span>Metric</span>
+                <span>Competitor</span>
+                <span className="text-right">Average</span>
+              </div>
+              {mentionRateData.map((item, i) => (
+                <div key={item.name} className="grid grid-cols-[1fr_2fr_120px] items-center border-b border-ink/[5%] py-2.5">
+                  <span className="text-[13px] font-semibold text-ink">
+                    {i === 0 ? "Mention Rate" : ""}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-scrunch-xs" style={{ backgroundColor: item.color }}>
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                        <path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span className="text-[13px] text-ink/80">{item.name}</span>
+                  </div>
+                  <span className="text-right text-[13px] font-plex-mono text-ink tabular-nums">
+                    {item.pct > 0 ? `${item.pct}%` : "0%"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
